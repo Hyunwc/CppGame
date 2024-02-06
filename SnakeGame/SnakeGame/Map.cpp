@@ -2,20 +2,25 @@
 
 Map::Map()
 {
+	m_mapSize.m_iWidth = WIDTH;
+	m_mapSize.m_iHeight = HEIGHT;
 }
 
 void Map::MapDraw()
 {
+	//벽그리는 함수
+	MapDraw::WallDraw(m_mapSize.m_iWidth, m_mapSize.m_iHeight);
 }
 
-Position Map::GetPosition()
+void Map::RandObstacle()
 {
-	return Position();
+	//srand((unsigned int)time(0)); //난수 생성
+	
 }
 
 Size Map::GetSize()
 {
-	return Size();
+	return m_mapSize;
 }
 
 Map::~Map()

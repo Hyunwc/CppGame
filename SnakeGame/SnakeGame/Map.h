@@ -1,16 +1,19 @@
 #pragma once
 #include "Mecro.h"
 #include "MapDraw.h"
+#define WIDTH 50
+#define HEIGHT 30
 
 class Map
 {
 private:
-	Position m_position; //¸ÊÀÇ ÁÂÇ¥
-	Size m_mapSize; //¸ÊÀÇ Å©±â
+	Size m_mapSize;
+	//int m_wallWidth;
+	//int m_wallHeight;
 public:
-	Map(); //»ý¼ºÀÚ
-	void MapDraw(); //´Ü¼ø ¸Ê ±×¸®±â
-	Position GetPosition(); //¸ÊÀÇ ½ÃÀÛÁÂÇ¥ ¹ÝÈ¯
-	Size GetSize(); // ¸Ê °¡·Î ¼¼·Î ¹ÝÈ¯
-	~Map(); //¼Ò¸êÀÚ
+	Map();
+	void MapDraw();
+	void RandObstacle(); //·£´ýÀ¸·Î Àå¾Ö¹°ÁÂÇ¥ Á¤ÇÏ±â
+	Size GetSize(); //¸Ê °¡·Î ¼¼·Î ¹ÝÈ¯
+	~Map();
 };

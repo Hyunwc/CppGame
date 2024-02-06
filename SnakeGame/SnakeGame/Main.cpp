@@ -8,6 +8,10 @@
 
 int main()
 {
-
+	Map map;
+	GameManager gmr;
+	map.MapDraw(); //º®
+	gmr.SetPosition(map.GetSize());
+	gmr.MenuDraw();
 	return 0;
 }
