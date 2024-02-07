@@ -1,11 +1,6 @@
 #include "MapDraw.h"
 
 
-MapDraw::MapDraw()
-{
-}
-
-
 void MapDraw::DrawPoint(string str, int x, int y)
 {
 	gotoxy(x * 2, y);
@@ -18,7 +13,7 @@ void MapDraw::TextDraw(string str, int x, int y)
 {
 	gotoxy(x, y);
 	cout << str;
-	
+
 }
 
 void MapDraw::DrawMidText(string str, int x, int y)
@@ -38,8 +33,40 @@ void MapDraw::ErasePoint(int x, int y)
 	return;
 }
 
-MapDraw::~MapDraw()
+void MapDraw::WallDraw(int width, int height)
 {
-	
-
+	for (int y = 0; y < height; y++)
+	{
+		gotoxy(0, 0 + y);
+		if (y == 0)
+		{
+			cout << "▦";
+			//y 0이면서 x좌표들은 가로길이만큼 특수기호로
+			for (int x = 1; x < width; x++)
+			{
+				cout << "▦";
+			}
+		}
+		else if (y == height - 1)
+		{
+			cout << "▦";
+			for (int x = 1; x < width; x++)
+				cout << "▦";
+		}
+		//나머지 좌표 중 x좌표들은 공백으로
+		else
+		{
+			cout << "▦";
+			for (int x = 1; x < width - 1; x++)
+				cout << "  ";
+			cout << "▦";
+		}
+	}
 }
+
+void MapDraw::ObstacleDraw(int x, int y)
+{
+	gotoxy(x, y);
+	cout << "▦";
+}
+
