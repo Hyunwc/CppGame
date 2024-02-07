@@ -64,9 +64,23 @@ void MapDraw::WallDraw(int width, int height)
 	}
 }
 
-void MapDraw::ObstacleDraw(int x, int y)
+void MapDraw::ObstacleDraw(vector<Position> Obsvec)
 {
-	gotoxy(x, y);
-	cout << "¢Ë";
+	for (const auto& obs : Obsvec)
+	{
+		gotoxy(obs.m_ix, obs.m_iy);
+		cout << "¢Ë";
+	}
+}
+
+void MapDraw::HeartDraw(vector<Position> Heartvec)
+{
+	int CurClock, CountClock;
+	CountClock = clock();
+	for (const auto& heart : Heartvec)
+	{
+		gotoxy(heart.m_ix, heart.m_iy);
+		cout << "¢¾";
+	}
 }
 

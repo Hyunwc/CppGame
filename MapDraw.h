@@ -10,7 +10,8 @@ public:
 	static void DrawMidText(string str, int x, int y);
 	static void ErasePoint(int x, int y);
 	static void WallDraw(int width, int height);
-	static void ObstacleDraw(int x, int y);
+	static void ObstacleDraw(vector<Position> Obsvec);
+	static void HeartDraw(vector<Position> Heartvec);
 	static inline void gotoxy(int x, int y)
 	{
 		COORD Pos = { x, y };

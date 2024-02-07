@@ -28,7 +28,7 @@ void GameManager::MenuDraw()
 	{
 	case 1:
 		//GameStart함수 완성시 작성예정.
-		cout << "게임이 시작되었습니다~" << endl;
+		GameStart();
 		break;
 	case 2:
 		return;
@@ -37,12 +37,15 @@ void GameManager::MenuDraw()
 
 void GameManager::GameStart()
 {
+	system("cls");
+	map.RandObstacle();
+	map.RandHeart();
+	map.MapDraw();
 }
 
 void GameManager::TextScore()
 {
-	string str = "Score : ";
-
+	
 }
 
 GameManager::~GameManager()

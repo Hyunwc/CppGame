@@ -15,6 +15,14 @@ struct Position
 {
 	int m_ix;
 	int m_iy;
+	//좌표 비교하기 위한 연산자 오버로드
+	bool operator==(Position tmp)
+	{
+		if ((this->m_ix == tmp.m_ix) && (this->m_iy == tmp.m_iy))
+			return true;
+		else
+			return false;
+	}
 };
 //맵크기 구조체
 struct Size
