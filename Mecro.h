@@ -7,6 +7,7 @@
 #include <Windows.h>
 #include <cstdlib>
 #include <vector>
+#include <set>
 #include <time.h>
 using namespace std;
 
@@ -22,6 +23,12 @@ struct Position
 			return true;
 		else
 			return false;
+	}
+	//set에 구조체를 담기 위한 연산자 오버로드
+	bool operator < (const Position& tmp) const {
+		if (m_ix == tmp.m_ix)
+			return m_iy < tmp.m_iy;
+		return m_ix < tmp.m_ix;
 	}
 };
 //맵크기 구조체

@@ -64,20 +64,20 @@ void MapDraw::WallDraw(int width, int height)
 	}
 }
 
-void MapDraw::ObstacleDraw(vector<Position> Obsvec)
+void MapDraw::ObstacleDraw(set<Position> ObsSet)
 {
-	for (const auto& obs : Obsvec)
+	for (const auto& obs : ObsSet)
 	{
 		gotoxy(obs.m_ix, obs.m_iy);
 		cout << "¢Ë";
 	}
 }
 
-void MapDraw::HeartDraw(vector<Position> Heartvec)
+void MapDraw::HeartDraw(set<Position> HeartSet)
 {
 	int CurClock, CountClock;
 	CountClock = clock();
-	for (const auto& heart : Heartvec)
+	for (const auto& heart : HeartSet)
 	{
 		gotoxy(heart.m_ix, heart.m_iy);
 		cout << "¢¾";
