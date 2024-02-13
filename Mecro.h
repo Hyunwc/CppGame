@@ -8,6 +8,7 @@
 #include <cstdlib>
 #include <vector>
 #include <set>
+#include <list>
 #include <time.h>
 using namespace std;
 

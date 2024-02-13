@@ -17,13 +17,13 @@ private:
 	Map map;
 	string m_head;
 	Position m_position;
+	Position m_LastPosition;
 	Size m_mapSize;
 	DIRECTION m_snakeDirection;
+	vector<Position> m_tail;
 	int m_curClock;
 	int m_moveClock;
 	int m_speed;
-	char input;
-	char direction;
 public:
 	Snake();
 
@@ -33,6 +33,7 @@ public:
 	void Move();
 	void SelectDirection();
 	Position GetPosition();
-	char getInput();
+	void SpeedUp();
+	void AddTail();
 	~Snake();
 };

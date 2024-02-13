@@ -6,7 +6,7 @@ Map::Map()
 	m_mapSize.m_iWidth = WIDTH;
 	m_mapSize.m_iHeight = HEIGHT;
 	ObstacleCount = 50;
-	HeartCount = 10;
+	HeartCount = 0;
 }
 
 void Map::MapDraw()
@@ -14,7 +14,7 @@ void Map::MapDraw()
 	MapDraw::WallDraw(m_mapSize.m_iWidth, m_mapSize.m_iHeight);
 	//MapDraw::WallDraw(WallVec);
 	MapDraw::ObstacleDraw(ObsSet);
-	MapDraw::HeartDraw(HeartSet);
+	//MapDraw::HeartDraw(HeartSet);
 }
 
 
@@ -59,7 +59,7 @@ void Map::RandHeart()
 {
 	
 	int i = 0;
-	while (i < HeartCount)
+	while (i < 10)
 	{
 		HeartPos.m_ix = (rand() % (m_mapSize.m_iWidth - 2) * 2) + 2;
 		HeartPos.m_iy = (rand() % (m_mapSize.m_iHeight - 2)) + 1;
@@ -72,6 +72,27 @@ void Map::RandHeart()
 Size Map::GetSize()
 {
 	return m_mapSize;
+}
+
+set<Position> Map::GetObstaclePos()
+{
+	return ObsSet;
+}
+
+set<Position> Map::GetHeartPos()
+{
+	return HeartSet;
+}
+
+void Map::HeartDraw()
+{
+	m_CurClock = clock();
+	if (HeartCount <= 10 && m_CurClock - m_HeartClock > 1000)
+	{
+		m_HeartClock = m_CurClock;
+		MapDraw::HeartDraw(HeartSet);
+		HeartCount++;
+	}
 }
 
 Map::~Map()
