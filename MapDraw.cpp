@@ -13,7 +13,6 @@ void MapDraw::TextDraw(string str, int x, int y)
 {
 	gotoxy(x, y);
 	cout << str;
-
 }
 
 void MapDraw::DrawMidText(string str, int x, int y)
@@ -25,12 +24,18 @@ void MapDraw::DrawMidText(string str, int x, int y)
 	return;
 }
 
-void MapDraw::ErasePoint(int x, int y)
+void MapDraw::ErasePoint(string str, int x, int y)
 {
 	gotoxy(x * 2, y);
-	cout << " ";
+	cout << "  ";
 	gotoxy(-1, -1);
 	return;
+}
+
+void MapDraw::TextErase(int x, int y)
+{
+	gotoxy(x, y);
+	cout << "  ";
 }
 
 void MapDraw::WallDraw(int width, int height)
@@ -63,6 +68,15 @@ void MapDraw::WallDraw(int width, int height)
 		}
 	}
 }
+
+//void MapDraw::WallDraw(vector<Position> WallSet)
+//{
+//	for (const auto& wall : WallSet)
+//	{
+//		gotoxy(wall.m_ix, wall.m_iy);
+//		cout << "¢Ë";
+//	}
+//}
 
 void MapDraw::ObstacleDraw(set<Position> ObsSet)
 {

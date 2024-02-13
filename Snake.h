@@ -1,6 +1,7 @@
 #pragma once
 #include "Mecro.h"
 #include "MapDraw.h"
+#include "Map.h"
 
 enum DIRECTION
 {
@@ -13,6 +14,7 @@ enum DIRECTION
 class Snake
 {
 private:
+	Map map;
 	string m_head;
 	Position m_position;
 	Size m_mapSize;
@@ -26,9 +28,11 @@ public:
 	Snake();
 
 	void SetPosition(Size _mapSize);
-	void SnakeDraw();
+	void SnakeDraw(); 
+	void SnakeErase();
 	void Move();
 	void SelectDirection();
+	Position GetPosition();
 	char getInput();
 	~Snake();
 };

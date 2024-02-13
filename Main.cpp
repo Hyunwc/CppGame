@@ -18,6 +18,8 @@ int main()
 	snake.SnakeDraw();
 	while (1)
 	{
+		snake.SelectDirection();
+		snake.Move();
 		/*MapDraw::gotoxy(55, 10);
 		cout << "테스트용";*/
 	

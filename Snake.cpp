@@ -18,13 +18,18 @@ void Snake::SnakeDraw()
 	MapDraw::TextDraw(m_head, m_position.m_ix, m_position.m_iy);
 }
 
+void Snake::SnakeErase()
+{
+	MapDraw::TextErase(m_position.m_ix, m_position.m_iy);
+}
+
 void Snake::SelectDirection()
 {
 	char ch;
 
-	if (kbhit())
+	if (_kbhit())
 	{
-		ch = getch();
+		ch = _getch();
 
 		switch (ch)
 		{
@@ -48,24 +53,41 @@ void Snake::SelectDirection()
 	}
 }
 
+Position Snake::GetPosition()
+{
+	return m_position;
+}
+
+
+
 void Snake::Move()
 {
 	m_curClock = clock();
 	if (m_curClock - m_moveClock >= m_speed)
 	{
+		SnakeErase();
+
 		switch (m_snakeDirection)
 		{
 		case DIRECTION_LEFT:
+			m_position.m_ix--;
 			break;
 		case DIRECTION_RIGHT:
+			m_position.m_ix++;
 			break;
 		case DIRECTION_UP:
+			m_position.m_iy--;
 			break;
 		case DIRECTION_DOWN:
+			m_position.m_iy++;
 			break;
 		default:
 			break;
 		}
+
+		SnakeDraw();
+
+		m_moveClock = m_curClock;
 	}
 }
 

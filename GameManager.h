@@ -2,12 +2,13 @@
 #include "Mecro.h"
 #include "MapDraw.h"
 #include "Map.h"
-
+#include "Snake.h"
 class GameManager
 {
 private:
 	Size m_mapSize;
 	Map map;
+	Snake snake;
 	//int heartCount = 0; //하트 개수
 	int score = 0;  //스코어
 public:

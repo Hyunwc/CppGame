@@ -4,18 +4,23 @@
 #define WIDTH 50
 #define HEIGHT 30
 
+enum MAP
+{
+	MAP_WALL,
+	MAP_OBSTACLE,
+	MAP_HEART
+};
+
 class Map
 {
 private:
 	Size m_mapSize;
 	//int m_wallWidth;
 	//int m_wallHeight;
-	//vector<Position> Obsvec; //장애물 좌표 담아둘 컨테이너
-	//vector<Position> Heartvec; //하트 좌표 담아둘 컨테이너
 	vector<Position> WallVec;
 	set<Position> ObsSet; //장애물 좌표 담아둘 컨테이너
 	set<Position> HeartSet; //하트 좌표 담아둘 컨테이너
-	Position WallPos;
+	Position WallPos; //벽 x,y 좌표 구조체
 	Position ObsPos; //장애물 x,y 좌표 구조체
 	Position HeartPos; //하트 x,y 좌표 구조체
 	int ObstacleCount = 0;

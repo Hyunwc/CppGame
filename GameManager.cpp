@@ -38,6 +38,7 @@ void GameManager::MenuDraw()
 void GameManager::GameStart()
 {
 	system("cls");
+	//map.WallSetting();
 	map.RandObstacle();
 	map.RandHeart();
 	map.MapDraw();
