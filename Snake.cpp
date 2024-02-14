@@ -4,6 +4,8 @@ Snake::Snake()
 {
 	m_head = "⊙";
 	m_speed = 1000;
+	m_curClock = 0;
+	m_moveClock = 0;
 }
 
 void Snake::SetPosition(Size _mapSize)
@@ -15,14 +17,25 @@ void Snake::SetPosition(Size _mapSize)
 	//m_snake.clear();
 }
 
+void Snake::SnakeSetting(string str, Position pos)
+{
+	SnakeState Snake_Head;
+	Snake_Head = { str, pos.m_ix, pos.m_iy, 0, 0 };
+	SnakeVec.push_back(Snake_Head);
+}
+
 void Snake::SnakeDraw()
 {
-	MapDraw::TextDraw(m_head, m_position.m_ix, m_position.m_iy);
+	for (auto itr = SnakeVec.begin(); itr != SnakeVec.end(); itr++)
+		MapDraw::TextDraw(itr->m_str, itr->m_curPos.m_ix, itr->m_curPos.m_iy);
+	//MapDraw::TextDraw(m_head, m_position.m_ix, m_position.m_iy);
 }
 
 void Snake::SnakeErase()
 {
-	MapDraw::TextErase(m_position.m_ix, m_position.m_iy);
+	for (auto itr = SnakeVec.begin(); itr != SnakeVec.end(); itr++)
+		MapDraw::TextErase(itr->m_str, itr->m_curPos.m_ix, itr->m_curPos.m_iy);
+	//MapDraw::TextErase(m_position.m_ix, m_position.m_iy);
 }
 
 void Snake::SelectDirection()
@@ -61,43 +74,37 @@ Position Snake::GetPosition()
 }
 
 
-
 void Snake::Move()
 {
+	auto itr = SnakeVec.begin(); //머리부터
+
 	m_curClock = clock();
+
 	if (m_curClock - m_moveClock >= m_speed)
 	{
 		SnakeErase();
-
-		Position prevHeadPosition = m_position;
+		itr->m_lastPos.m_ix = itr->m_curPos.m_ix;
+		itr->m_lastPos.m_iy = itr->m_curPos.m_iy;
 
 		switch (m_snakeDirection)
 		{
 		case DIRECTION_LEFT:
-			m_position.m_ix--;
+			itr->m_curPos.m_ix--;
 			break;
 		case DIRECTION_RIGHT:
-			m_position.m_ix++;
+			itr->m_curPos.m_ix++;
 			break;
 		case DIRECTION_UP:
-			m_position.m_iy--;
+			itr->m_curPos.m_iy--;
 			break;
 		case DIRECTION_DOWN:
-			m_position.m_iy++;
+			itr->m_curPos.m_iy++;
 			break;
 		default:
 			break;
 		}
 
-		if (!m_tail.empty())
-		{
-			// 꼬리의 마지막 위치를 가져와서 꼬리를 지우고 머리 위치에 추가
-			Position tailEnd = m_tail.back();
-			MapDraw::TextErase(tailEnd.m_ix, tailEnd.m_iy);
-			m_tail.pop_back();
-			m_tail.insert(m_tail.begin(), prevHeadPosition);
-		}
-
+		
 		SnakeDraw();
 
 		m_moveClock = m_curClock;
@@ -107,11 +114,15 @@ void Snake::Move()
 
 void Snake::SpeedUp()
 {
+	m_speed -= 50;
 }
 
 void Snake::AddTail()
 {
-	m_tail.push_back(m_position);
+	SnakeState Snake_Tail;
+	auto itr = SnakeVec.begin();
+	Snake_Tail = { "○", itr->m_lastPos.m_ix, itr->m_lastPos.m_iy, 0, 0 };
+	SnakeVec.push_back(Snake_Tail);
 }
 
 Snake::~Snake()

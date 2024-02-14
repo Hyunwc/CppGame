@@ -6,20 +6,10 @@
 
 
 
-struct SnakeState
-{
-	string m_str;
-	int m_curPosX; //뱀의 현재?
-	int m_curPosY; 
-	int m_lastPosX;
-	int m_lastPosY;
-};
-
 class Map
 {
 private:
 	Size m_mapSize;
-	SnakeState m_state;
 	vector<Position> WallVec;
 	set<Position> ObsSet; //장애물 좌표 담아둘 컨테이너
 	set<Position> HeartSet; //하트 좌표 담아둘 컨테이너

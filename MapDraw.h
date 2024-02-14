@@ -9,7 +9,7 @@ public:
 	static void TextDraw(string str, int x, int y);
 	static void DrawMidText(string str, int x, int y);
 	static void ErasePoint(string str, int x, int y);
-	static void TextErase(int x, int y);
+	static void TextErase(string str, int x, int y);
 	static void WallDraw(int width, int height);
 	//static void WallDraw(vector<Position> WallSet);
 	static void ObstacleDraw(set<Position> ObsSet);

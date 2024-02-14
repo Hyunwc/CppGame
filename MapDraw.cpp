@@ -32,7 +32,7 @@ void MapDraw::ErasePoint(string str, int x, int y)
 	return;
 }
 
-void MapDraw::TextErase(int x, int y)
+void MapDraw::TextErase(string str, int x, int y)
 {
 	gotoxy(x, y);
 	cout << "  ";

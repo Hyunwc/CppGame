@@ -50,6 +50,7 @@ void GameManager::GameStart()
 	map.RandObstacle();
 	map.RandHeart();
 	map.MapDraw();
+	snake.SnakeSetting("⊙", snake.GetPosition());
 	snake.SnakeDraw();
 	GamePlay();
 }
