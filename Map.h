@@ -1,10 +1,16 @@
 #pragma once
 #include "Mecro.h"
 #include "MapDraw.h"
+#include "Snake.h"
 #define WIDTH 50
 #define HEIGHT 30
 
-
+enum MAP
+{
+	MAP_WALL,
+	MAP_OBSTACLE,
+	MAP_HEART
+};
 
 class Map
 {
@@ -30,5 +36,6 @@ public:
 	set<Position> GetObstaclePos();
 	set<Position> GetHeartPos();
 	void HeartDraw();
+	bool isCollide(Position s_curPos);
 	~Map();
 };

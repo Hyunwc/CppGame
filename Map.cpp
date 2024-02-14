@@ -95,6 +95,21 @@ void Map::HeartDraw()
 	}
 }
 
+bool Map::isCollide(Position s_curPos)
+{
+	//Position collidePos = s_curPos;
+
+	//set<Position> heartPosition = GetHeartPos();
+	auto obj = ObsSet.find(s_curPos);
+
+	if (obj != ObsSet.end())
+	{
+		ObsSet.erase(obj); //해당좌표 삭제
+		return MAP_OBSTACLE;
+	}
+	return false;
+}
+
 Map::~Map()
 {
 }

@@ -11,9 +11,16 @@ enum DIRECTION
 	DIRECTION_DOWN = 's'
 };
 
+enum SnakeType
+{
+	SNAKETYPE_HEAD,
+	SNAKETYPE_TAIL
+};
+
 struct SnakeState
 {
 	string m_str; //뱀의 모양
+	SnakeType s_type; //머리인지 꼬리인지 구분할
 	Position m_curPos; //현재 좌표x,y
 	Position m_lastPos; //마지막 좌표x,y
 };
@@ -21,7 +28,6 @@ struct SnakeState
 class Snake
 {
 private:
-	Map map;
 	string m_head;
 	Position m_position;
 	Position m_LastPosition;
@@ -36,7 +42,7 @@ public:
 	Snake();
 
 	void SetPosition(Size _mapSize);
-	void SnakeSetting(string str, Position pos);
+	void SnakeSetting(string str, SnakeType s_type, Position pos);
 	void SnakeDraw(); 
 	void SnakeErase();
 	void Move();
@@ -44,5 +50,7 @@ public:
 	Position GetPosition();
 	void SpeedUp();
 	void AddTail();
+	void TailMove();
+	Position TestGet(); //컨테이너의 현재좌표만 반환하기 위한 함수
 	~Snake();
 };

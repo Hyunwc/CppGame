@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "GameManager.h"
 
+
 GameManager::GameManager()
 {
 
@@ -50,7 +51,7 @@ void GameManager::GameStart()
 	map.RandObstacle();
 	map.RandHeart();
 	map.MapDraw();
-	snake.SnakeSetting("⊙", snake.GetPosition());
+	snake.SnakeSetting("⊙", SNAKETYPE_HEAD, snake.GetPosition());
 	snake.SnakeDraw();
 	GamePlay();
 }
@@ -63,15 +64,12 @@ void GameManager::GamePlay()
 		snake.Move();
 		map.HeartDraw();
 
-		int CollisionResult = CheckCollision();
+		Position curSnaksPos = snake.TestGet();
+		int CollisionResult = map.isCollide(curSnaksPos);
 		if (CollisionResult == MAP_OBSTACLE)
 		{
 			snake.AddTail();
-			//cout << "장애물이다!";
-			//exit(0);
 		}
-		/*else if(CollisionResult == MAP_HEART)
-			cout << "하트다 하트!";*/
 	}
 }
 
@@ -82,28 +80,26 @@ void GameManager::TextScore()
 	
 }
 
-bool GameManager::CheckCollision()
-{
-	//뱀의 현재 좌표
-	Position snakePosition = snake.GetPosition();
-
-	int snakePosX = snakePosition.m_ix;
-	int snakePosY = snakePosition.m_iy;
-
-	set<Position> obsPosition = map.GetObstaclePos();
-	set<Position> heartPosition = map.GetHeartPos();
-	
-	if (obsPosition.find(snakePosition) != obsPosition.end())
-	{
-		return MAP_OBSTACLE;
-	}
-	else if (heartPosition.find(snakePosition) != heartPosition.end())
-	{
-		return MAP_HEART;
-	}
-
-	return false;
-}
+//bool GameManager::CheckCollision()
+//{
+//	Position testPos = snake.TestGet();
+//
+//	set<Position> obsPosition = map.GetObstaclePos();
+//	set<Position> heartPosition = map.GetHeartPos();
+//	
+//	auto obj = obsPosition.find(testPos);
+//	if (obj != obsPosition.end())
+//	{
+//		obsPosition.erase(obj);
+//		return MAP_OBSTACLE;
+//	}
+//	else if (heartPosition.find(testPos) != heartPosition.end())
+//	{
+//		return MAP_HEART;
+//	}
+//
+//	return false;
+//}
 
 GameManager::~GameManager()
 {

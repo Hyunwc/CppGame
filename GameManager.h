@@ -4,12 +4,6 @@
 #include "Map.h"
 #include "Snake.h"
 
-enum MAP
-{
-	MAP_WALL,
-	MAP_OBSTACLE,
-	MAP_HEART
-};
 
 class GameManager
 {
@@ -28,6 +22,5 @@ public:
 	void GamePlay();
 	void GameOver();
 	void TextScore(); //스코어 관리
-	bool CheckCollision();
 	~GameManager();
 };
