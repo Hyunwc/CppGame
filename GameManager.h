@@ -12,7 +12,7 @@ private:
 	Map map;
 	Snake snake;
 	//int heartCount = 0; //하트 개수
-	int score = 0;  //스코어
+	int score;  //스코어
 public:
 	GameManager(); //생성자
 	void SetPosition(Size _mapSize);

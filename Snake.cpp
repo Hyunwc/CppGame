@@ -20,21 +20,21 @@ void Snake::SetPosition(Size _mapSize)
 void Snake::SnakeSetting(string str, SnakeType s_type, Position pos)
 {
 	SnakeState Snake_Head;
-	Snake_Head = { str, s_type, pos.m_ix, pos.m_iy, 0, 0 };
+	Snake_Head = { str, s_type, pos.m_ix / 2, pos.m_iy, 0, 0 };
 	SnakeVec.push_back(Snake_Head);
 }
 
 void Snake::SnakeDraw()
 {
 	for (auto itr = SnakeVec.begin(); itr != SnakeVec.end(); itr++)
-		MapDraw::TextDraw(itr->m_str, itr->m_curPos.m_ix, itr->m_curPos.m_iy);
+		MapDraw::TextDraw(itr->m_str, itr->m_curPos.m_ix * 2, itr->m_curPos.m_iy);
 	//MapDraw::TextDraw(m_head, m_position.m_ix, m_position.m_iy);
 }
 
 void Snake::SnakeErase()
 {
 	for (auto itr = SnakeVec.begin(); itr != SnakeVec.end(); itr++)
-		MapDraw::TextErase(itr->m_str, itr->m_curPos.m_ix, itr->m_curPos.m_iy);
+		MapDraw::TextErase(itr->m_str, itr->m_curPos.m_ix * 2, itr->m_curPos.m_iy);
 	//MapDraw::TextErase(m_position.m_ix, m_position.m_iy);
 }
 
@@ -89,6 +89,8 @@ void Snake::Move()
 
 		switch (m_snakeDirection)
 		{
+		case DIRECTION_DEFAULT:
+			break;
 		case DIRECTION_LEFT:
 			itr->m_curPos.m_ix--;
 			break;
@@ -116,7 +118,7 @@ void Snake::Move()
 
 void Snake::SpeedUp()
 {
-	m_speed -= 50;
+	m_speed -= 100;
 }
 
 void Snake::AddTail()
@@ -154,6 +156,13 @@ void Snake::TailMove()
 			saveLast.m_iy = saveTail.m_iy;
 		}
 	}
+}
+
+void Snake::SnakeClear()
+{
+	SnakeVec.clear();
+	m_speed = 1000;
+	m_snakeDirection = DIRECTION_DEFAULT;
 }
 
 Position Snake::TestGet()

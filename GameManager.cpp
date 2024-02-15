@@ -4,7 +4,7 @@
 
 GameManager::GameManager()
 {
-
+	score = 0;
 }
 
 void GameManager::SetPosition(Size _mapSize)
@@ -23,8 +23,15 @@ void GameManager::GameSetting()
 
 void GameManager::MenuDraw()
 {
+	system("cls");
 	int Select;
-	
+
+	snake.SnakeClear();
+	//장애물, 하트 컨테이너 전부 삭제
+	map.AllClear();
+	score = 0;
+	map.MapDraw();
+
 	MapDraw::gotoxy(m_mapSize.m_iWidth * 0.8, m_mapSize.m_iHeight * 0.3);
 	cout << "S n a k e  G a m e" << endl;
 	MapDraw::gotoxy(m_mapSize.m_iWidth * 0.9, m_mapSize.m_iHeight * 0.4);
@@ -60,43 +67,50 @@ void GameManager::GameStart()
 
 void GameManager::GamePlay()
 {
-	TextScore();
+	
 	while (1)
 	{
 		snake.SelectDirection();
 		snake.Move();
 		map.HeartDraw();
 		
-
+		TextScore();
 		Position curSnaksPos = snake.TestGet();
 		int CollisionResult = map.isCollide(curSnaksPos);
 		if (CollisionResult == MAP_OBSTACLE)
 		{
 			//게임오버 완성되면 수정할예정
-			exit(0);
+			GameOver();
+			//exit(0);
 		}
 		else if (CollisionResult == MAP_HEART)
 		{
 			snake.AddTail();
 			snake.SpeedUp();
+			score++;
 		}
 	}
 }
 
 void GameManager::GameOver()
 {
+	MapDraw::gotoxy(m_mapSize.m_iWidth * 0.85, m_mapSize.m_iHeight * 0.3);
+	cout << "G a m e O v e r";
+	MapDraw::gotoxy(m_mapSize.m_iWidth * 0.9, m_mapSize.m_iHeight * 0.5);
+	cout << "Score : " << score;
+	MapDraw::gotoxy(m_mapSize.m_iWidth * 0.9, m_mapSize.m_iHeight * 0.7);
+	cout << "Press Key";
+
+	_getch();
+	MenuDraw();
 }
-
-
 
 void GameManager::TextScore()
 {
-	
-	MapDraw::gotoxy(40, 32);
+	//45, 35
+	MapDraw::gotoxy(m_mapSize.m_iWidth * 0.9, m_mapSize.m_iHeight + 2);
 	cout << "Score : " << score << endl;
 }
-
-
 
 GameManager::~GameManager()
 {

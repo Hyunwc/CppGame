@@ -5,6 +5,7 @@
 
 enum DIRECTION
 {
+	DIRECTION_DEFAULT,
 	DIRECTION_LEFT = 'a',
 	DIRECTION_RIGHT = 'd',
 	DIRECTION_UP = 'w',
@@ -51,6 +52,7 @@ public:
 	void SpeedUp();
 	void AddTail();
 	void TailMove();
+	void SnakeClear();
 	Position TestGet(); //컨테이너의 현재좌표만 반환하기 위한 함수
 	~Snake();
 };

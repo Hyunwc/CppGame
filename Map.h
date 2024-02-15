@@ -30,13 +30,14 @@ private:
 public:
 	Map();
 	void MapDraw();
-	void WallSetting();
+	//void WallSetting();
 	void RandObstacle(); //랜덤으로 장애물좌표 정하기
 	void RandHeart(); //랜덤으로 하트좌표 정하기
 	Size GetSize(); //맵 가로 세로 반환
 	set<Position> GetObstaclePos();
 	set<Position> GetHeartPos();
 	void HeartDraw();
+	void AllClear();
 	int isCollide(Position s_curPos);
 	~Map();
 };

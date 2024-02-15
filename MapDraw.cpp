@@ -82,7 +82,7 @@ void MapDraw::ObstacleDraw(set<Position> ObsSet)
 {
 	for (const auto& obs : ObsSet)
 	{
-		gotoxy(obs.m_ix, obs.m_iy);
+		gotoxy(obs.m_ix * 2, obs.m_iy);
 		cout << "¢Ë";
 	}
 }
@@ -91,15 +91,15 @@ void MapDraw::HeartDraw(set<Position> HeartSet)
 {
 	//int CurClock, CountClock;
 	//CountClock = clock();
-	for (const auto& heart : HeartSet)
+	/*for (const auto& heart : HeartSet)
 	{
-		gotoxy(heart.m_ix, heart.m_iy);
-		cout << "¢¾";
-	}
-	/*for (auto itr = HeartSet.begin(); itr != HeartSet.end(); itr++)
-	{
-		gotoxy(itr->m_ix, itr->m_iy);
+		gotoxy(heart.m_ix * 2, heart.m_iy);
 		cout << "¢¾";
 	}*/
+	for (auto itr = HeartSet.begin(); itr != HeartSet.end(); itr++)
+	{
+		gotoxy(itr->m_ix * 2, itr->m_iy);
+		cout << "¢¾";
+	}
 }
 
