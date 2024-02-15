@@ -129,16 +129,32 @@ void Snake::AddTail()
 
 void Snake::TailMove()
 {
+	Position saveTail, saveLast = { 0, 0 };
 	for (auto itr = SnakeVec.begin(); itr != SnakeVec.end(); itr++)
 	{
-		if (m_state.s_type == SNAKETYPE_TAIL)
+		if (itr->s_type == SNAKETYPE_HEAD)
 		{
-			itr->m_curPos.m_ix = itr->m_lastPos.m_ix;
-			itr->m_curPos.m_iy = itr->m_lastPos.m_iy;
+			//머리의 마지막 위치를 저장
+			saveLast.m_ix = itr->m_lastPos.m_ix;
+			saveLast.m_iy = itr->m_lastPos.m_iy;
+		}
+		else if (itr->s_type == SNAKETYPE_TAIL)
+		{
+			//꼬리의 마지막좌표를 현재위치로 저장
+			itr->m_lastPos.m_ix = itr->m_curPos.m_ix;
+			itr->m_lastPos.m_iy = itr->m_curPos.m_iy;
+			//꼬리의 현재 위치를 따로 저장
+			saveTail.m_ix = itr->m_curPos.m_ix;
+			saveTail.m_iy = itr->m_curPos.m_iy;
+			//현재위치를 앞 객체의 좌표로 업데이트
+			itr->m_curPos.m_ix = saveLast.m_ix;
+			itr->m_curPos.m_iy = saveLast.m_iy;
+			//다음 객체가 업데이트할 좌표를 이전 객체의 좌표로 미리 업데이트
+			saveLast.m_ix = saveTail.m_ix;
+			saveLast.m_iy = saveTail.m_iy;
 		}
 	}
 }
-
 
 Position Snake::TestGet()
 {

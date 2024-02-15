@@ -7,6 +7,7 @@
 
 enum MAP
 {
+	MAP_EMPTY,
 	MAP_WALL,
 	MAP_OBSTACLE,
 	MAP_HEART
@@ -36,6 +37,6 @@ public:
 	set<Position> GetObstaclePos();
 	set<Position> GetHeartPos();
 	void HeartDraw();
-	bool isCollide(Position s_curPos);
+	int isCollide(Position s_curPos);
 	~Map();
 };

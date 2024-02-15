@@ -24,6 +24,7 @@ void GameManager::GameSetting()
 void GameManager::MenuDraw()
 {
 	int Select;
+	
 	MapDraw::gotoxy(m_mapSize.m_iWidth * 0.8, m_mapSize.m_iHeight * 0.3);
 	cout << "S n a k e  G a m e" << endl;
 	MapDraw::gotoxy(m_mapSize.m_iWidth * 0.9, m_mapSize.m_iHeight * 0.4);
@@ -53,24 +54,37 @@ void GameManager::GameStart()
 	map.MapDraw();
 	snake.SnakeSetting("⊙", SNAKETYPE_HEAD, snake.GetPosition());
 	snake.SnakeDraw();
+	
 	GamePlay();
 }
 
 void GameManager::GamePlay()
 {
+	TextScore();
 	while (1)
 	{
 		snake.SelectDirection();
 		snake.Move();
 		map.HeartDraw();
+		
 
 		Position curSnaksPos = snake.TestGet();
 		int CollisionResult = map.isCollide(curSnaksPos);
 		if (CollisionResult == MAP_OBSTACLE)
 		{
+			//게임오버 완성되면 수정할예정
+			exit(0);
+		}
+		else if (CollisionResult == MAP_HEART)
+		{
 			snake.AddTail();
+			snake.SpeedUp();
 		}
 	}
+}
+
+void GameManager::GameOver()
+{
 }
 
 
@@ -78,28 +92,11 @@ void GameManager::GamePlay()
 void GameManager::TextScore()
 {
 	
+	MapDraw::gotoxy(40, 32);
+	cout << "Score : " << score << endl;
 }
 
-//bool GameManager::CheckCollision()
-//{
-//	Position testPos = snake.TestGet();
-//
-//	set<Position> obsPosition = map.GetObstaclePos();
-//	set<Position> heartPosition = map.GetHeartPos();
-//	
-//	auto obj = obsPosition.find(testPos);
-//	if (obj != obsPosition.end())
-//	{
-//		obsPosition.erase(obj);
-//		return MAP_OBSTACLE;
-//	}
-//	else if (heartPosition.find(testPos) != heartPosition.end())
-//	{
-//		return MAP_HEART;
-//	}
-//
-//	return false;
-//}
+
 
 GameManager::~GameManager()
 {

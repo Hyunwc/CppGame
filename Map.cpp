@@ -5,7 +5,7 @@ Map::Map()
 	srand((unsigned int)time(0));
 	m_mapSize.m_iWidth = WIDTH;
 	m_mapSize.m_iHeight = HEIGHT;
-	ObstacleCount = 50;
+	ObstacleCount = 5;
 	HeartCount = 0;
 }
 
@@ -95,19 +95,22 @@ void Map::HeartDraw()
 	}
 }
 
-bool Map::isCollide(Position s_curPos)
+int Map::isCollide(Position s_curPos)
 {
-	//Position collidePos = s_curPos;
-
-	//set<Position> heartPosition = GetHeartPos();
 	auto obj = ObsSet.find(s_curPos);
+	auto ht = HeartSet.find(s_curPos);
 
 	if (obj != ObsSet.end())
 	{
 		ObsSet.erase(obj); //해당좌표 삭제
 		return MAP_OBSTACLE;
 	}
-	return false;
+	else if (ht != HeartSet.end())
+	{
+		HeartSet.erase(ht);
+		return MAP_HEART;
+	}
+	return MAP_EMPTY;
 }
 
 Map::~Map()
