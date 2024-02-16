@@ -165,6 +165,21 @@ void Snake::SnakeClear()
 	m_snakeDirection = DIRECTION_DEFAULT;
 }
 
+bool Snake::TailCollide()
+{
+	Position headPos = TestGet();
+
+	for (auto tailItr = SnakeVec.begin() + 1; tailItr != SnakeVec.end(); tailItr++)
+	{
+		if (headPos.m_ix == tailItr->m_curPos.m_ix && headPos.m_iy == tailItr->m_curPos.m_iy)
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
 Position Snake::TestGet()
 {
 	auto itr = SnakeVec.begin();

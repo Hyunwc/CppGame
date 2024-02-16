@@ -57,7 +57,7 @@ void GameManager::GameStart()
 	system("cls");
 	//map.WallSetting();
 	map.RandObstacle();
-	map.RandHeart();
+	//map.RandHeart();
 	map.MapDraw();
 	snake.SnakeSetting("⊙", SNAKETYPE_HEAD, snake.GetPosition());
 	snake.SnakeDraw();
@@ -74,7 +74,7 @@ void GameManager::GamePlay()
 		snake.Move();
 		map.HeartDraw();
 		
-		TextScore();
+		//TextScore();
 		Position curSnaksPos = snake.TestGet();
 		int CollisionResult = map.isCollide(curSnaksPos);
 		if (CollisionResult == MAP_OBSTACLE)
@@ -89,6 +89,8 @@ void GameManager::GamePlay()
 			snake.SpeedUp();
 			score++;
 		}
+		else if (snake.TailCollide())
+			GameOver();
 	}
 }
 

@@ -36,8 +36,10 @@ public:
 	Size GetSize(); //맵 가로 세로 반환
 	set<Position> GetObstaclePos();
 	set<Position> GetHeartPos();
+	bool ObsCheck(set<Position> obs, Position heartPos);
 	void HeartDraw();
 	void AllClear();
+
 	int isCollide(Position s_curPos);
 	~Map();
 };

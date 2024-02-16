@@ -53,6 +53,7 @@ public:
 	void AddTail();
 	void TailMove();
 	void SnakeClear();
+	bool TailCollide();
 	Position TestGet(); //컨테이너의 현재좌표만 반환하기 위한 함수
 	~Snake();
 };

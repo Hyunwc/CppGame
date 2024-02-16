@@ -32,17 +32,19 @@ void Map::RandObstacle()
 
 void Map::RandHeart()
 {
-	
-	int i = 0;
-	while (i < 10)
+	while (1)
 	{
 		HeartPos.m_ix = (rand() % (m_mapSize.m_iWidth - 2)) + 1;
 		HeartPos.m_iy = (rand() % (m_mapSize.m_iHeight - 2)) + 1;
 
+		if (ObsCheck(ObsSet, HeartPos))
+			continue;
+
 		HeartSet.insert(HeartPos);
-		i++;
+		break;
 	}
 }
+
 
 Size Map::GetSize()
 {
@@ -58,30 +60,28 @@ set<Position> Map::GetHeartPos()
 {
 	return HeartSet;
 }
+//장애물과 겹치는지 
+bool Map::ObsCheck(set<Position> obs, Position heartPos)
+{
+	for (auto itr = obs.begin(); itr != obs.end(); itr++)
+	{
+		//만약 장애물과 겹친다면 리턴true
+		if (itr->m_ix == heartPos.m_ix && itr->m_iy == heartPos.m_iy)
+			return true;
+	}
+	return false;
+}
 
 void Map::HeartDraw()
 {
 	m_CurClock = clock();
-	if (HeartCount <= 10 && m_CurClock - m_HeartClock > 1000)
+	if (HeartCount < 10 && m_CurClock - m_HeartClock > 1000)
 	{
-		MapDraw::HeartDraw(HeartSet);
+		RandHeart();
 		m_HeartClock = m_CurClock;
+		MapDraw::HeartDraw(HeartSet);
 		HeartCount++;
 	}
-	/*int CountClock, CurClock;
-	CountClock = clock();
-	while (1)
-	{
-		CurClock = clock();
-		if (HeartCount <= 10 && CurClock - CountClock > 1000)
-		{
-			MapDraw::HeartDraw(HeartSet);
-			
-			CountClock = CurClock;
-			HeartCount++;
-		}
-		
-	}*/
 }
 
 void Map::AllClear()
@@ -103,6 +103,7 @@ int Map::isCollide(Position s_curPos)
 	else if (ht != HeartSet.end())
 	{
 		HeartSet.erase(ht);
+		HeartCount--;
 		return MAP_HEART;
 	}
 	return MAP_EMPTY;
