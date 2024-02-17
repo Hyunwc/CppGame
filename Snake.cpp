@@ -118,8 +118,10 @@ void Snake::Move()
 
 void Snake::SpeedUp()
 {
-	m_speed -= 100;
+	if(m_speed >= 200)
+		m_speed -= 100;
 }
+	
 
 void Snake::AddTail()
 {
