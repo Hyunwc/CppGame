@@ -38,55 +38,12 @@ void MapDraw::TextErase(string str, int x, int y)
 	cout << "  ";
 }
 
-//void MapDraw::WallDraw(int width, int height)
-//{
-//	for (int y = 0; y < height; y++)
-//	{
-//		gotoxy(0, y); 
-//
-//		for (int x = 0; x < width; x++)
-//		{
-//			// 첫 번째 행, 마지막 행, 첫 번째 열, 마지막 열인지 확인
-//			if (y == 0 || y == height - 1 || x == 0 || x == width - 1)
-//				cout << "▦";
-//			else
-//				cout << "  ";
-//		}
-//	}
-//	//for (int y = 0; y < height; y++)
-//	//{
-//	//	gotoxy(0, 0 + y);
-//	//	if (y == 0)
-//	//	{
-//	//		cout << "▦";
-//	//		//y 0이면서 x좌표들은 가로길이만큼 특수기호로
-//	//		for (int x = 1; x < width; x++)
-//	//		{
-//	//			cout << "▦";
-//	//		}
-//	//	}
-//	//	else if (y == height - 1)
-//	//	{
-//	//		cout << "▦";
-//	//		for (int x = 1; x < width; x++)
-//	//			cout << "▦";
-//	//	}
-//	//	//나머지 좌표 중 x좌표들은 공백으로
-//	//	else
-//	//	{
-//	//		cout << "▦";
-//	//		for (int x = 1; x < width - 1; x++)
-//	//			cout << "  ";
-//	//		cout << "▦";
-//	//	}
-//	//}
-//}
 
 void MapDraw::WallDraw(set<Position> WallSet)
 {
 	for (const auto& wall : WallSet)
 	{
-		gotoxy(wall.m_ix, wall.m_iy);
+		gotoxy(wall.m_ix * 2, wall.m_iy);
 		cout << "▦";
 	}
 }

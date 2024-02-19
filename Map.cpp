@@ -23,9 +23,8 @@ void Map::WallSetting()
 	{
 		for (int x = 0; x < m_mapSize.m_iWidth; x++)
 		{
-			// 첫 번째 행, 마지막 행, 첫 번째 열, 마지막 열인지 확인
 			if (y == 0 || y == m_mapSize.m_iHeight - 1 || x == 0 || x == m_mapSize.m_iWidth - 1)
-				WallVec.insert({ x * 2, y });
+				WallVec.insert({ x, y });
 		}
 	}
 }
@@ -99,6 +98,7 @@ void Map::HeartDraw()
 
 void Map::AllClear()
 {
+	HeartCount = 0;
 	ObsSet.clear();
 	HeartSet.clear();
 }
@@ -114,13 +114,15 @@ int Map::isCollide(Position s_curPos)
 		ObsSet.erase(obj); //해당좌표 삭제
 		return MAP_OBSTACLE;
 	}
-	else if (ht != HeartSet.end())
+	
+	if (ht != HeartSet.end())
 	{
 		HeartSet.erase(ht);
 		HeartCount--;
 		return MAP_HEART;
 	}
-	else if (wall != WallVec.end())
+	
+	if (wall != WallVec.end())
 	{
 		return MAP_WALL;
 	}

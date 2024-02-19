@@ -29,20 +29,25 @@ struct SnakeState
 class Snake
 {
 private:
-	string m_head;
-	Position m_position;
-	Position m_LastPosition;
-	Size m_mapSize;
-	SnakeState m_state;
-	DIRECTION m_snakeDirection;
+	SnakeState m_state;//m_head
 	vector<SnakeState> SnakeVec;
+
+	const string m_head;
+	Position m_position;
+	//Position m_LastPosition;
+
+	Size m_mapSize;
+	DIRECTION m_snakeDirection;
+
+
 	int m_curClock;
 	int m_moveClock;
 	int m_speed;
+
 public:
 	Snake();
 
-	void SetPosition(Size _mapSize);
+	void SetPosition(const Size& _mapSize);
 	void SnakeSetting(string str, SnakeType s_type, Position pos);
 	void SnakeDraw(); 
 	void SnakeErase();

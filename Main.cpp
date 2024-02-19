@@ -9,6 +9,7 @@
 int main()
 {
 	GameManager gmr;
+	system("mode con cols=100 lines=35");
 	while (1)
 	{
 		gmr.GameSetting();

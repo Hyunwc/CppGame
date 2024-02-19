@@ -10,7 +10,8 @@ enum MAP
 	MAP_EMPTY,
 	MAP_WALL,
 	MAP_OBSTACLE,
-	MAP_HEART
+	MAP_HEART,
+	MAP_TAIL
 };
 
 class Map

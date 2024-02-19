@@ -1,14 +1,14 @@
 #include "Snake.h"
 
-Snake::Snake()
+Snake::Snake():
+	m_head("⊙")
 {
-	m_head = "⊙";
 	m_speed = 1000;
 	m_curClock = 0;
 	m_moveClock = 0;
 }
 
-void Snake::SetPosition(Size _mapSize)
+void Snake::SetPosition(const Size& _mapSize)
 {
 	//현재 시작 0,0 가로50 세로30
 	m_position.m_ix = _mapSize.m_iWidth - 1;
@@ -19,22 +19,29 @@ void Snake::SetPosition(Size _mapSize)
 
 void Snake::SnakeSetting(string str, SnakeType s_type, Position pos)
 {
-	SnakeState Snake_Head;
-	Snake_Head = { str, s_type, pos.m_ix / 2, pos.m_iy, 0, 0 };
+	SnakeState Snake_Head{ str, s_type, pos.m_ix / 2, pos.m_iy, 0, 0 };
 	SnakeVec.push_back(Snake_Head);
 }
 
 void Snake::SnakeDraw()
 {
-	for (auto itr = SnakeVec.begin(); itr != SnakeVec.end(); itr++)
-		MapDraw::TextDraw(itr->m_str, itr->m_curPos.m_ix * 2, itr->m_curPos.m_iy);
+	for (const SnakeState& snake : SnakeVec)
+	{
+		MapDraw::TextDraw(snake.m_str, snake.m_curPos.m_ix * 2, snake.m_curPos.m_iy);
+	}
+	/*for (auto itr = SnakeVec.begin(); itr != SnakeVec.end(); itr++)
+		MapDraw::TextDraw(itr->m_str, itr->m_curPos.m_ix * 2, itr->m_curPos.m_iy);*/
 	//MapDraw::TextDraw(m_head, m_position.m_ix, m_position.m_iy);
 }
 
 void Snake::SnakeErase()
 {
-	for (auto itr = SnakeVec.begin(); itr != SnakeVec.end(); itr++)
-		MapDraw::TextErase(itr->m_str, itr->m_curPos.m_ix * 2, itr->m_curPos.m_iy);
+	for (const SnakeState& snake : SnakeVec)
+	{
+		MapDraw::TextErase(snake.m_str, snake.m_curPos.m_ix * 2, snake.m_curPos.m_iy);
+	}
+	/*for (auto itr = SnakeVec.begin(); itr != SnakeVec.end(); itr++)
+		MapDraw::TextErase(itr->m_str, itr->m_curPos.m_ix * 2, itr->m_curPos.m_iy);*/
 	//MapDraw::TextErase(m_position.m_ix, m_position.m_iy);
 }
 
@@ -147,12 +154,15 @@ void Snake::TailMove()
 			//꼬리의 마지막좌표를 현재위치로 저장
 			itr->m_lastPos.m_ix = itr->m_curPos.m_ix;
 			itr->m_lastPos.m_iy = itr->m_curPos.m_iy;
+
 			//꼬리의 현재 위치를 따로 저장
 			saveTail.m_ix = itr->m_curPos.m_ix;
 			saveTail.m_iy = itr->m_curPos.m_iy;
+
 			//현재위치를 앞 객체의 좌표로 업데이트
 			itr->m_curPos.m_ix = saveLast.m_ix;
 			itr->m_curPos.m_iy = saveLast.m_iy;
+
 			//다음 객체가 업데이트할 좌표를 이전 객체의 좌표로 미리 업데이트
 			saveLast.m_ix = saveTail.m_ix;
 			saveLast.m_iy = saveTail.m_iy;

@@ -13,14 +13,15 @@ private:
 	Snake snake;
 	//int heartCount = 0; //하트 개수
 	int score;  //스코어
+
 public:
-	GameManager(); //생성자
+	GameManager(); 
 	void SetPosition(Size _mapSize);
 	void GameSetting();
 	void MenuDraw(); //게임선택메뉴 
 	void GameStart();
 	void GamePlay();
 	void GameOver();
-	void TextScore(); //스코어 관리
+	void TextScore(); //스코어 출력
 	~GameManager();
 };
