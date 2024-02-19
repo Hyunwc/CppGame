@@ -11,10 +11,23 @@ Map::Map()
 
 void Map::MapDraw()
 {
-	MapDraw::WallDraw(m_mapSize.m_iWidth, m_mapSize.m_iHeight);
-	//MapDraw::WallDraw(WallVec);
+	//MapDraw::WallDraw(m_mapSize.m_iWidth, m_mapSize.m_iHeight);
+	MapDraw::WallDraw(WallVec);
 	MapDraw::ObstacleDraw(ObsSet);
 	//MapDraw::HeartDraw(HeartSet);
+}
+
+void Map::WallSetting()
+{
+	for (int y = 0; y < m_mapSize.m_iHeight; y++)
+	{
+		for (int x = 0; x < m_mapSize.m_iWidth; x++)
+		{
+			// 첫 번째 행, 마지막 행, 첫 번째 열, 마지막 열인지 확인
+			if (y == 0 || y == m_mapSize.m_iHeight - 1 || x == 0 || x == m_mapSize.m_iWidth - 1)
+				WallVec.insert({ x * 2, y });
+		}
+	}
 }
 
 void Map::RandObstacle()
@@ -92,6 +105,7 @@ void Map::AllClear()
 
 int Map::isCollide(Position s_curPos)
 {
+	auto wall = WallVec.find(s_curPos);
 	auto obj = ObsSet.find(s_curPos);
 	auto ht = HeartSet.find(s_curPos);
 
@@ -106,6 +120,11 @@ int Map::isCollide(Position s_curPos)
 		HeartCount--;
 		return MAP_HEART;
 	}
+	else if (wall != WallVec.end())
+	{
+		return MAP_WALL;
+	}
+
 	return MAP_EMPTY;
 }
 

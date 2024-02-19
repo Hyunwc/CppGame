@@ -10,8 +10,8 @@ public:
 	static void DrawMidText(string str, int x, int y);
 	static void ErasePoint(string str, int x, int y);
 	static void TextErase(string str, int x, int y);
-	static void WallDraw(int width, int height);
-	//static void WallDraw(vector<Position> WallSet);
+	//static void WallDraw(int width, int height);
+	static void WallDraw(set<Position> WallSet);
 	static void ObstacleDraw(set<Position> ObsSet);
 	static void HeartDraw(set<Position> HeartSet);
 	static inline void gotoxy(int x, int y)

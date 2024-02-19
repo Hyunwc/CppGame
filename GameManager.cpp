@@ -15,10 +15,12 @@ void GameManager::SetPosition(Size _mapSize)
 
 void GameManager::GameSetting()
 {
+	map.WallSetting();
 	map.MapDraw();
 	SetPosition(map.GetSize());
 	snake.SetPosition(map.GetSize());
 	MenuDraw();
+
 }
 
 void GameManager::MenuDraw()
@@ -31,7 +33,7 @@ void GameManager::MenuDraw()
 	map.AllClear();
 	score = 0;
 	map.MapDraw();
-
+	TextScore();
 	MapDraw::gotoxy(m_mapSize.m_iWidth * 0.8, m_mapSize.m_iHeight * 0.3);
 	cout << "S n a k e  G a m e" << endl;
 	MapDraw::gotoxy(m_mapSize.m_iWidth * 0.9, m_mapSize.m_iHeight * 0.4);
@@ -55,7 +57,7 @@ void GameManager::MenuDraw()
 void GameManager::GameStart()
 {
 	system("cls");
-	//map.WallSetting();
+	
 	map.RandObstacle();
 	//map.RandHeart();
 	map.MapDraw();
@@ -67,7 +69,7 @@ void GameManager::GameStart()
 
 void GameManager::GamePlay()
 {
-	
+	TextScore();
 	while (1)
 	{
 		snake.SelectDirection();
@@ -77,6 +79,7 @@ void GameManager::GamePlay()
 		//TextScore();
 		Position curSnaksPos = snake.TestGet();
 		int CollisionResult = map.isCollide(curSnaksPos);
+		//cout << CollisionResult;
 		if (CollisionResult == MAP_OBSTACLE)
 		{
 			//게임오버 완성되면 수정할예정
@@ -88,6 +91,11 @@ void GameManager::GamePlay()
 			snake.AddTail();
 			snake.SpeedUp();
 			score++;
+			TextScore();
+		}
+		else if (CollisionResult == MAP_WALL)
+		{
+			GameOver();
 		}
 		else if (snake.TailCollide())
 			GameOver();
@@ -110,6 +118,9 @@ void GameManager::GameOver()
 void GameManager::TextScore()
 {
 	//45, 35
+	/*string str = "Score : ";
+	str += to_string(score);
+	MapDraw::DrawMidText(str, m_mapSize.m_iWidth, m_mapSize.m_iHeight + 2);*/
 	MapDraw::gotoxy(m_mapSize.m_iWidth * 0.9, m_mapSize.m_iHeight + 2);
 	cout << "Score : " << score << endl;
 }
