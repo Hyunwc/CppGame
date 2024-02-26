@@ -37,6 +37,18 @@ void MapDraw::DrawPoint(string str, int x, int y)
 	return;
 }
 
+void MapDraw::TextDraw(string str, int x, int y)
+{
+	gotoxy(x, y);
+	cout << str;
+}
+
+void MapDraw::TextErase(string str, int x, int y)
+{
+	gotoxy(x, y);
+	cout << "  ";
+}
+
 void MapDraw::DrawMidText(string str, int x, int y)
 {
 	if (x > str.size() / 2)
@@ -46,7 +58,7 @@ void MapDraw::DrawMidText(string str, int x, int y)
 	return;
 }
 
-void MapDraw::ErawPoint(string str, int x, int y)
+void MapDraw::ErasePoint(string str, int x, int y)
 {
 	gotoxy(x * 2, y);
 	cout << "  ";

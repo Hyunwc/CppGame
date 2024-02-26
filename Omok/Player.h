@@ -18,7 +18,11 @@ class Player
 private:
 	string stone; //바둑돌 모양
 	Position stonePos; //바둑돌의 x, y 좌표
+	Position savePos; //바둑돌의 좌표를 저장할 변수
 public:
+	Player();
 	void SetPosition(const Size& _mapSize);
-	void Move();
+	void StoneDraw();
+	void StoneErase();
+	void KeyInput(); //키보드 입력에 따라 움직임, 말놓기, 무르기, 종료 수행
 };
