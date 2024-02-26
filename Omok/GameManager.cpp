@@ -32,8 +32,17 @@ void GameManager::MenuDraw()
 
 void GameManager::GameStart()
 {
+	system("cls"); //시작과 동시에 기존 화면 지운다.
+	MapDraw::FieldDraw(width, height); //오목판 그리기.
+	MenualDraw(); //조작법 출력
 }
 
 void GameManager::MenualDraw()
 {
+	MapDraw::gotoxy(width * 0.8, height + 2);
+	cout << "====조작키====" << endl;
+	cout << "이동 : A, S, W, D  돌놓기 : ENTER" << endl;
+	cout << "무르기 : N 종료 : ESC" << endl;
+	cout << "Player Name : " << "무르기 : 5" << endl;
+	cout << "Turn : ";
 }
