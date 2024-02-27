@@ -19,6 +19,7 @@ private:
 	string stone; //바둑돌 모양
 	Position stonePos; //바둑돌의 x, y 좌표
 	Position savePos; //바둑돌의 좌표를 저장할 변수
+	bool isBlackTurn; //블랙,화이트 턴 구분할 변수 true일시 블랙 턴
 public:
 	Player();
 	void SetPosition(const Size& _mapSize);
