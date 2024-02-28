@@ -17,7 +17,7 @@ class Player
 {
 private:
 	string stone; //바둑돌 모양
-	Position stonePos; //바둑돌의 x, y 좌표
+	Position curPos; //현재 x, y 좌표
 	Position blackSavePos;
 	Position whiteSavePos; //바둑돌의 좌표를 저장할 변수
 	vector<Position> BlackStoneVec; //흑돌의 좌표를 담을 컨테이너
@@ -31,6 +31,7 @@ public:
 	void StoneErase(Position prevPos);
 	void KeyInput(); //키보드 입력에 따라 움직임, 말놓기, 무르기, 종료 수행
 	void CursorUpdate();
+	void Cancel(); //무르기 
 	
 	string playerName;
 	int turn;

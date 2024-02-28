@@ -54,7 +54,7 @@ void GameManager::GamePlay()
 	{
 		player.KeyInput();
 		//player.CursorUpdate();
-		//MenualDraw();
+		MenualDraw();
 	}
 }
 

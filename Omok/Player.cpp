@@ -2,34 +2,33 @@
 
 Player::Player() : stone("○"), isBlackTurn(true), playerName("Black")
 {
-	turn = 0;
+	turn = 1;
 }
 
 void Player::SetPosition(const Size& _mapSize)
 {
 	//맵 중앙에 바둑돌을 그리기 위함
-	stonePos.m_ix = _mapSize.m_iWidth / 2;
-	stonePos.m_iy = _mapSize.m_iHeight / 2;
-	blackSavePos = stonePos;
-	whiteSavePos = stonePos;
+	curPos.m_ix = _mapSize.m_iWidth / 2;
+	curPos.m_iy = _mapSize.m_iHeight / 2;
+	blackSavePos = curPos;
+	whiteSavePos = curPos;
 }
 
 void Player::StoneDraw()
 {
-	//MapDraw::FieldDraw(20, 20); //지워진 맵을 다시 그리기 위함
-	//MapDraw::DrawPoint(stone, stonePos.m_ix, stonePos.m_iy);
+	//컨테이너에 저장된 흑돌 Draw
 	for (const auto& pos : BlackStoneVec)
 		MapDraw::DrawPoint("○", pos.m_ix, pos.m_iy);
 
 	for (const auto& pos : WhiteStoneVec)
 		MapDraw::DrawPoint("●", pos.m_ix, pos.m_iy);
 
-	MapDraw::DrawPoint(stone, stonePos.m_ix, stonePos.m_iy);
-
-	/*if(isBlackTurn)
-		MapDraw::DrawPoint(stone, blackSavePos.m_ix, blackSavePos.m_iy);
+	if (isBlackTurn)
+		stone = "○";
 	else
-		MapDraw::DrawPoint(stone, whiteSavePos.m_ix, whiteSavePos.m_iy);*/
+		stone = "●";
+
+	MapDraw::DrawPoint(stone, curPos.m_ix, curPos.m_iy);
 }
 
 void Player::StoneErase(Position prevPos)
@@ -61,7 +60,7 @@ void Player::StoneErase(Position prevPos)
 void Player::KeyInput()
 {
 	//돌의 이전 좌표 저장
-	Position prevPos = stonePos;
+	Position prevPos = curPos;
 	//키보드 입력값에 따라
 	if (_kbhit())
 	{
@@ -70,60 +69,87 @@ void Player::KeyInput()
 		case KEY_LEFT:
 		{
 			//x = 0 이상일때까지만 //나중에 수정할 예정
-			if (stonePos.m_ix - 1 >= 0)
+			if (curPos.m_ix - 1 >= 0)
 			{
-				stonePos.m_ix--;
+				curPos.m_ix--;
 				break;
 			}
 		}
 		case KEY_RIGHT:
 		{
 			//x = 20 이하 
-			if (stonePos.m_ix + 1 < 20)
+			if (curPos.m_ix + 1 < 20)
 			{
-				stonePos.m_ix++;
+				curPos.m_ix++;
 				break;
 			}
 		}
 		case KEY_UP:
 		{
-			if (stonePos.m_iy - 1 >= 0)
+			if (curPos.m_iy - 1 >= 0)
 			{
-				stonePos.m_iy--;
+				curPos.m_iy--;
 				break;
 			}
 		}
 		case KEY_DOWN:
 		{
-			if (stonePos.m_iy + 1 < 20)
+			if (curPos.m_iy + 1 < 20)
 			{
-				stonePos.m_iy++;
+				curPos.m_iy++;
 				break;
 			}
 		}
-		//바둑돌 놓는 기능 추가 예정
+		//엔터 입력시
 		case KEY_ENTER:
 		{
+			//턴증가
 			turn++;
-
+			//CursorUpdate();
+			//블랙턴일때
 			if (isBlackTurn)
 			{
-				//MapDraw::gotoxy(blackSavePos.m_ix, blackSavePos.m_iy);
-				BlackStoneVec.push_back(stonePos);
-				blackSavePos = stonePos;
-				stone = "●";
+				//좌표를 흑돌벡터에 push 
+				BlackStoneVec.push_back(curPos);
+				//그 좌표를 저장(턴이 돌아 왔을 때 이 좌표에서 시작하기 위함)
+				blackSavePos = curPos;
+				//stone = "●";
+				playerName = "White";
+				isBlackTurn = false;
+				//블랙에서 화이트턴으로 바뀌었으니 커서 업데이트 함수에서 화이트턴 조건을 타 
+				//백돌의 마지막 좌표로 커서가 업데이트됨
+			}
+			else
+			{
+				//흑돌 기능과 반대 역할
+				WhiteStoneVec.push_back(curPos);
+				whiteSavePos = curPos;
+				//stone = "○";
+				playerName = "Black";
+				isBlackTurn = true;
+			}
+
+			CursorUpdate();
+			break;
+		}
+		//무르기
+		case KEY_CANCEL:
+		{
+			turn--;
+			//cout << "무르기 호출";
+			//무르기를 선택한게 블랙턴일 경우 턴 체인지
+			if (isBlackTurn)
+			{
 				playerName = "White";
 				isBlackTurn = false;
 			}
 			else
 			{
-				//MapDraw::gotoxy(whiteSavePos.m_ix, whiteSavePos.m_iy);
-				WhiteStoneVec.push_back(stonePos);
-				whiteSavePos = stonePos;
-				stone = "○";
 				playerName = "Black";
 				isBlackTurn = true;
 			}
+			//체인지 후에 무르기함수 호출
+			Cancel(); 
 			break;
 		}
 		}
@@ -138,10 +164,40 @@ void Player::CursorUpdate()
 	//블랙턴이 되었을때 바로 커서 업데이트해버리자
 	if (isBlackTurn)
 	{
-		MapDraw::gotoxy(blackSavePos.m_ix * 2, blackSavePos.m_iy);
+		//좌표를 마지막에 흑돌 두었던 좌표로 업데이트
+		curPos = blackSavePos;
 	}
 	else
 	{
-		MapDraw::gotoxy(whiteSavePos.m_ix * 2, whiteSavePos.m_iy);
+		curPos = whiteSavePos;
 	}
+	//업데이트된 좌표에 바둑돌 다시 그림
+	StoneDraw();
+}
+
+void Player::Cancel()
+{
+	//
+	if (isBlackTurn) {
+		//반복자에 흑돌 맨마지막 좌표 저장
+		//그 좌표 ※표시 여기에 못 놓게 하기 위함 (나중에 예외처리 만들 예정)
+		//맨마지막에 넣은 좌표 삭제
+		auto last = BlackStoneVec.end() - 1;
+		/*curPos.m_ix = last->m_ix;
+		curPos.m_iy = last->m_iy;*/
+		//MapDraw::DrawPoint("※", last->m_ix, last->m_iy);
+
+	    BlackStoneVec.erase(BlackStoneVec.end() - 1);
+	}
+	else
+	{
+		auto last = WhiteStoneVec.end() - 1;
+		/*curPos.m_ix = last->m_ix;
+		curPos.m_iy = last->m_iy;*/
+		//MapDraw::DrawPoint("※", last->m_ix, last->m_iy);
+		WhiteStoneVec.erase(WhiteStoneVec.end() - 1);
+		
+	}
+
+	CursorUpdate();
 }
