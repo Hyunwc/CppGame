@@ -53,8 +53,12 @@ void GameManager::GamePlay()
 	while (1)
 	{
 		player.KeyInput();
+		//player.CursorUpdate();
+		//MenualDraw();
 	}
 }
+
+
 
 void GameManager::MenualDraw()
 {
@@ -62,8 +66,8 @@ void GameManager::MenualDraw()
 	cout << "====조작키====" << endl;
 	cout << "이동 : A, S, W, D  돌놓기 : ENTER" << endl;
 	cout << "무르기 : N 종료 : ESC" << endl;
-	cout << "Player Name : " << "무르기 : 5" << endl;
-	cout << "Turn : ";
+	cout << "Player Name : " << player.playerName << " 무르기 : 5" << endl;
+	cout << "Turn : " << player.turn;
 }
 
 

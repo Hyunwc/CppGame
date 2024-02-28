@@ -18,14 +18,21 @@ class Player
 private:
 	string stone; //바둑돌 모양
 	Position stonePos; //바둑돌의 x, y 좌표
-	Position savePos; //바둑돌의 좌표를 저장할 변수
-	vector<Position> stoneVec; //바둑돌의 좌표를 담을 컨테이너
+	Position blackSavePos;
+	Position whiteSavePos; //바둑돌의 좌표를 저장할 변수
+	vector<Position> BlackStoneVec; //흑돌의 좌표를 담을 컨테이너
+	vector<Position> WhiteStoneVec; //백돌의 좌표를 담을 컨테이너
 	bool isBlackTurn; //블랙,화이트 턴 구분할 변수 true일시 블랙 턴
+	
 public:
 	Player();
 	void SetPosition(const Size& _mapSize);
 	void StoneDraw();
-	void StoneErase();
+	void StoneErase(Position prevPos);
 	void KeyInput(); //키보드 입력에 따라 움직임, 말놓기, 무르기, 종료 수행
-	void Move(char input);
+	void CursorUpdate();
+	
+	string playerName;
+	int turn;
+	//void Move(char input);
 };
