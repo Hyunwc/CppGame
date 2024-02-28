@@ -10,6 +10,8 @@ public:
 	static void TextErase(string str, int x, int y);
 	static void DrawMidText(string str, int x, int y);
 	static void ErasePoint(string str, int x, int y);
+	static void StoneDraw(vector<Position> vec);
+	static void testDraw(vector<Position> vec, string str, int width, int height, int x, int y);
 	static inline void gotoxy(int x, int y)
 	{
 		COORD Pos = { x, y };

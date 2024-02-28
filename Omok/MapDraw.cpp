@@ -65,3 +65,20 @@ void MapDraw::ErasePoint(string str, int x, int y)
 	gotoxy(-1, -1);
 	return;
 }
+
+void MapDraw::StoneDraw(vector<Position> vec)
+{
+	for (const auto& stone : vec)
+	{
+		gotoxy(stone.m_ix * 2, stone.m_iy);
+		cout << "¡Ù";
+	}
+}
+
+void MapDraw::testDraw(vector<Position> vec, string str, int width, int height, int x, int y)
+{
+	
+	FieldDraw(width, height);
+	StoneDraw(vec);
+	DrawPoint(str, x, y);
+}

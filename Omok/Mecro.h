@@ -4,6 +4,7 @@
 #include <conio.h>
 #include <iomanip>
 #include <Windows.h>
+#include <vector>
 using namespace std;
 
 //x, y 좌표 구조체

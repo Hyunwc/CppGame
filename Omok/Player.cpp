@@ -26,60 +26,79 @@ void Player::StoneErase()
 
 void Player::KeyInput()
 {
-	Position nextPos = stonePos;
+	char ch;
 	//키보드 입력값에 따라
 	if (_kbhit())
 	{
-		//우선 먼저 그려진 바둑돌을 지운다
-		//MapDraw::TextErase(stone, stonePos.m_ix * 2, stonePos.m_iy);
-		
-		switch (_getch())
+		ch = _getch();
+	
+		switch (ch)
 		{
 		case KEY_LEFT:
-		{
-			//x = 0 이상일때까지만 //나중에 수정할 예정
-			if (nextPos.m_ix - 1 >= 0)
-			{
-				nextPos.m_ix--;
-				break;
-			}
-		}	
 		case KEY_RIGHT:
-		{
-			//x = 20 이하 
-			if (nextPos.m_ix + 1 < 20)
-			{
-				nextPos.m_ix++;
-				break;
-			}
-		}	
 		case KEY_UP:
-		{
-			if (nextPos.m_iy - 1 >= 0)
-			{
-				nextPos.m_iy--;
-				break;
-			}
-		}
 		case KEY_DOWN:
 		{
-			if (nextPos.m_iy + 1 < 20)
-			{
-				nextPos.m_iy++;
-				break;
-			}
+			Move(ch);
+			break;
 		}
 		//바둑돌 놓는 기능 추가 예정
 		case KEY_ENTER:
 		{
-
+			stoneVec.push_back(stonePos);
 		}
 		}
-
-
-		StoneErase();  //먼저 기존에 있던 바둑돌을 지운디
-		stonePos = nextPos; //바둑돌의 좌표를 nextPos로 업데이트
-		
-		StoneDraw(); //업데이트된 좌표에 바둑돌을 그린다.
 	}
+}
+
+void Player::Move(char input)
+{
+	switch (input)
+	{
+	case KEY_LEFT:
+	{
+		//x = 0 이상일때까지만 //나중에 수정할 예정
+		if (stonePos.m_ix - 1 >= 0)
+		{
+			stonePos.m_ix--;
+			break;
+		}
+	}
+	case KEY_RIGHT:
+	{
+		//x = 20 이하 
+		if (stonePos.m_ix + 1 < 20)
+		{
+			stonePos.m_ix++;
+			break;
+		}
+	}
+	case KEY_UP:
+	{
+		if (stonePos.m_iy - 1 >= 0)
+		{
+			stonePos.m_iy--;
+			break;
+		}
+	}
+	case KEY_DOWN:
+	{
+		if (stonePos.m_iy + 1 < 20)
+		{
+			stonePos.m_iy++;
+			break;
+		}
+	}
+	//바둑돌 놓는 기능 추가 예정
+	case KEY_ENTER:
+	{
+
+	}
+	}
+
+
+	StoneErase();  //먼저 기존에 있던 바둑돌을 지운디
+	//stonePos = nextPos; //바둑돌의 좌표를 nextPos로 업데이트
+	MapDraw::testDraw(stoneVec, stone, 20, 20, stonePos.m_ix, stonePos.m_iy);
+	//StoneDraw(); //업데이트된 좌표에 바둑돌을 그린다.
 }
