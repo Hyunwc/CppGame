@@ -135,22 +135,22 @@ void Player::KeyInput()
 		//무르기
 		case KEY_CANCEL:
 		{
-			turn--;
-			//cout << "무르기 호출";
-			//무르기를 선택한게 블랙턴일 경우 턴 체인지
-			if (isBlackTurn)
-			{
-				playerName = "White";
-				isBlackTurn = false;
-			}
-			else
-			{
-				playerName = "Black";
-				isBlackTurn = true;
-			}
-			//체인지 후에 무르기함수 호출
-			Cancel(); 
-			break;
+			//turn--;
+			////cout << "무르기 호출";
+			////무르기를 선택한게 블랙턴일 경우 턴 체인지
+			//if (isBlackTurn)
+			//{
+			//	playerName = "White";
+			//	isBlackTurn = false;
+			//}
+			//else
+			//{
+			//	playerName = "Black";
+			//	isBlackTurn = true;
+			//}
+			////체인지 후에 무르기함수 호출
+			//Cancel(); 
+			//break;
 		}
 		}
 
@@ -175,29 +175,34 @@ void Player::CursorUpdate()
 	StoneDraw();
 }
 
-void Player::Cancel()
-{
-	//
-	if (isBlackTurn) {
-		//반복자에 흑돌 맨마지막 좌표 저장
-		//그 좌표 ※표시 여기에 못 놓게 하기 위함 (나중에 예외처리 만들 예정)
-		//맨마지막에 넣은 좌표 삭제
-		auto last = BlackStoneVec.end() - 1;
-		/*curPos.m_ix = last->m_ix;
-		curPos.m_iy = last->m_iy;*/
-		//MapDraw::DrawPoint("※", last->m_ix, last->m_iy);
+//void Player::Cancel()
+//{
+//	//
+//	if (isBlackTurn) {
+//		//반복자에 흑돌 맨마지막 좌표 저장
+//		//그 좌표 ※표시 여기에 못 놓게 하기 위함 (나중에 예외처리 만들 예정)
+//		//맨마지막에 넣은 좌표 삭제
+//		auto last = BlackStoneVec.end() - 1;
+//		curPos.m_ix = last->m_ix;
+//		curPos.m_iy = last->m_iy;
+//		MapDraw::DrawPoint("※", last->m_ix, last->m_iy);
+//
+//	    BlackStoneVec.erase(BlackStoneVec.end() - 1);
+//	}
+//	else
+//	{
+//		auto last = WhiteStoneVec.end() - 1;
+//		curPos.m_ix = last->m_ix;
+//		curPos.m_iy = last->m_iy;
+//		MapDraw::DrawPoint("※", last->m_ix, last->m_iy);
+//		WhiteStoneVec.erase(WhiteStoneVec.end() - 1);
+//		
+//	}
+//
+//	//CursorUpdate();
+//}
 
-	    BlackStoneVec.erase(BlackStoneVec.end() - 1);
-	}
-	else
-	{
-		auto last = WhiteStoneVec.end() - 1;
-		/*curPos.m_ix = last->m_ix;
-		curPos.m_iy = last->m_iy;*/
-		//MapDraw::DrawPoint("※", last->m_ix, last->m_iy);
-		WhiteStoneVec.erase(WhiteStoneVec.end() - 1);
-		
-	}
-
-	CursorUpdate();
-}
+//bool Player::WinCheck()
+//{
+//
+//}

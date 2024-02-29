@@ -32,7 +32,8 @@ public:
 	void KeyInput(); //키보드 입력에 따라 움직임, 말놓기, 무르기, 종료 수행
 	void CursorUpdate();
 	void Cancel(); //무르기 
-	
+	bool WinCheck();
+
 	string playerName;
 	int turn;
 	//void Move(char input);

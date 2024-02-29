@@ -54,7 +54,13 @@ void GameManager::GamePlay()
 	{
 		player.KeyInput();
 		//player.CursorUpdate();
-		MenualDraw();
+		//MenualDraw();
+		/*if (player.WinCheck())
+		{
+			MapDraw::gotoxy(m_mapSize.m_iWidth * 0.8, m_mapSize.m_iHeight + 3);
+			cout << "½Â¸®";
+		}*/
+			
 	}
 }
 
