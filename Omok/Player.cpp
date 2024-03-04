@@ -10,6 +10,9 @@ void Player::SetPosition(const Size& _mapSize)
 	//맵 중앙에 바둑돌을 그리기 위함
 	curPos.m_ix = _mapSize.m_iWidth / 2;
 	curPos.m_iy = _mapSize.m_iHeight / 2;
+	//가로, 세로 _mapSize로 초기화
+	height = _mapSize.m_iHeight;
+	width = _mapSize.m_iWidth;
 	blackSavePos = curPos;
 	whiteSavePos = curPos;
 }
@@ -19,7 +22,7 @@ void Player::StoneDraw()
 	//컨테이너에 저장된 흑돌 Draw
 	for (const auto& pos : BlackStoneVec)
 		MapDraw::DrawPoint("○", pos.m_ix, pos.m_iy);
-
+	//컨테이너에 저장된 백돌 Draw
 	for (const auto& pos : WhiteStoneVec)
 		MapDraw::DrawPoint("●", pos.m_ix, pos.m_iy);
 
@@ -38,19 +41,19 @@ void Player::StoneErase(Position prevPos)
 	MapDraw::gotoxy(prevPos.m_ix * 2, prevPos.m_iy);
 	if (prevPos.m_ix == 0 && prevPos.m_iy == 0)
 		cout << "┌";
-	else if (prevPos.m_ix == 19 && prevPos.m_iy == 0)
+	else if (prevPos.m_ix == width - 1 && prevPos.m_iy == 0)
 		cout << "┐";
-	else if (prevPos.m_ix == 0 && prevPos.m_iy == 19)
+	else if (prevPos.m_ix == 0 && prevPos.m_iy == height - 1)
 		cout << "└";
-	else if (prevPos.m_ix == 19 && prevPos.m_iy == 19)
+	else if (prevPos.m_ix == width - 1 && prevPos.m_iy == height - 1)
 		cout << "┘";
 	else if (prevPos.m_ix == 0)
 		cout << "├";
-	else if (prevPos.m_ix == 19)
+	else if (prevPos.m_ix == width - 1)
 		cout << "┤";
 	else if (prevPos.m_iy == 0)
 		cout << "┬";
-	else if (prevPos.m_iy == 19)
+	else if (prevPos.m_iy == height - 1)
 		cout << "┴";
 	else
 		cout << "┼";
@@ -111,9 +114,10 @@ void Player::KeyInput()
 			{
 				//좌표를 흑돌벡터에 push 
 				BlackStoneVec.push_back(curPos);
+				//흑돌을 놓은 좌표에 Black을 대입
+				map[curPos.m_iy][curPos.m_ix] = CHECK_BLACK;
 				//그 좌표를 저장(턴이 돌아 왔을 때 이 좌표에서 시작하기 위함)
 				blackSavePos = curPos;
-				//stone = "●";
 				playerName = "White";
 				isBlackTurn = false;
 				//블랙에서 화이트턴으로 바뀌었으니 커서 업데이트 함수에서 화이트턴 조건을 타 
@@ -123,8 +127,8 @@ void Player::KeyInput()
 			{
 				//흑돌 기능과 반대 역할
 				WhiteStoneVec.push_back(curPos);
+				map[curPos.m_iy][curPos.m_ix] = CHECK_WHITE;
 				whiteSavePos = curPos;
-				//stone = "○";
 				playerName = "Black";
 				isBlackTurn = true;
 			}
@@ -202,7 +206,19 @@ void Player::CursorUpdate()
 //	//CursorUpdate();
 //}
 
-//bool Player::WinCheck()
-//{
-//
-//}
+bool Player::WinCheck()
+{
+	int count = 0; 
+
+	//{0, 0} 부터탐색
+	for (int y = 0; y < height; y++)
+	{
+		for (int x = 0; x < width; x++)
+		{
+			if (map[y][x] == CHECK_BLACK)
+				count++;
+			else if (map[y][x] == CHECK_WHITE || CHECK_EMPTY)
+				count = 0;
+		}
+	}
+}

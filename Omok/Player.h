@@ -13,9 +13,19 @@ enum KEY
 	KEY_CANCEL = 'n' //무르기
 };
 
+enum CHECK
+{
+	CHECK_EMPTY = 0,
+	CHECK_BLACK,
+	CHECK_WHITE
+};
+
 class Player
 {
 private:
+	int height;
+	int width;
+	int map[20][20] = { CHECK_EMPTY, };
 	string stone; //바둑돌 모양
 	Position curPos; //현재 x, y 좌표
 	Position blackSavePos;
@@ -23,7 +33,6 @@ private:
 	vector<Position> BlackStoneVec; //흑돌의 좌표를 담을 컨테이너
 	vector<Position> WhiteStoneVec; //백돌의 좌표를 담을 컨테이너
 	bool isBlackTurn; //블랙,화이트 턴 구분할 변수 true일시 블랙 턴
-	
 public:
 	Player();
 	void SetPosition(const Size& _mapSize);
