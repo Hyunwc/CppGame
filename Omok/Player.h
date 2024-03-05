@@ -15,7 +15,7 @@ enum KEY
 
 enum CHECK
 {
-	CHECK_EMPTY = 0,
+	CHECK_EMPTY = 0, //ฐ๘น้
 	CHECK_BLACK,
 	CHECK_WHITE
 };
