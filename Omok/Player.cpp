@@ -1,6 +1,6 @@
 #include "Player.h"
 
-Player::Player() : stone("○"), isBlackTurn(true), playerName("Black")
+Player::Player() : stone("○"), isBlackTurn(true), playerName("Black"), map{ {CHECK_EMPTY} }
 {
 	turn = 1;
 }
@@ -209,16 +209,23 @@ void Player::CursorUpdate()
 bool Player::WinCheck()
 {
 	int count = 0; 
+	bool win = false;
 
 	//{0, 0} 부터탐색
 	for (int y = 0; y < height; y++)
 	{
 		for (int x = 0; x < width; x++)
 		{
+			//해당좌표가 블랙일경우 
 			if (map[y][x] == CHECK_BLACK)
 				count++;
-			else if (map[y][x] == CHECK_WHITE || CHECK_EMPTY)
+			else if (map[y][x] == CHECK_EMPTY)
 				count = 0;
+
+			if (count == 5)
+				win = true;
 		}
 	}
+
+	return win;
 }

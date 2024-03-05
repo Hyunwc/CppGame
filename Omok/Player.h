@@ -25,7 +25,7 @@ class Player
 private:
 	int height;
 	int width;
-	int map[20][20] = { CHECK_EMPTY, };
+	int map[20][20];
 	string stone; //바둑돌 모양
 	Position curPos; //현재 x, y 좌표
 	Position blackSavePos;
