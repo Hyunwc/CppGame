@@ -222,7 +222,7 @@ bool Player::WinCheck()
 			//공백 또는 백돌을 만나면 카운트는 초기화된다.
 			if (map[y][x] == CHECK_BLACK)
 				count++;
-			else if (map[y][x] == CHECK_EMPTY || CHECK_WHITE)
+			else if (map[y][x] == CHECK_EMPTY || map[y][x] == CHECK_WHITE)
 				count = 0;
 
 			if (count == 5)
@@ -239,7 +239,7 @@ bool Player::WinCheck()
 			//map 0,0 탐색후 다음은 1, 0 = 좌표상 0,1
 			if (map[y][x] == CHECK_BLACK)
 				count++;
-			else if (map[y][x] == CHECK_EMPTY || CHECK_WHITE)
+			else if (map[y][x] == CHECK_EMPTY || map[y][x] == CHECK_WHITE)
 				count = 0;
 
 			if (count == 5)
@@ -259,7 +259,7 @@ bool Player::WinCheck()
 				count++;
 				y++;
 			}
-			else if (map[y + 1][x + 1] == CHECK_EMPTY || CHECK_WHITE)
+			else if (map[y + 1][x + 1] == CHECK_EMPTY || map[y][x] == CHECK_WHITE)
 				count = 0;
 
 			if (count == 5)
@@ -280,7 +280,7 @@ bool Player::WinCheck()
 				y++;
 				x -= 2;
 			}
-			else if (map[y][x] == CHECK_EMPTY || CHECK_WHITE)
+			else if (map[y][x] == CHECK_EMPTY || map[y][x] == CHECK_WHITE)
 				count = 0;
 
 			if (count == 5)
