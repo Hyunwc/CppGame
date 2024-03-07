@@ -206,10 +206,10 @@ void Player::CursorUpdate()
 //	//CursorUpdate();
 //}
 
-bool Player::WinCheck()
+int Player::WinCheck()
 {
-	int count = 0;
-	bool win = false;
+	int blackCount = 0;
+	int whiteCount = 0;
 
 	//가로 승리 조건 {0, 0} 부터탐색
 	for (int y = 0; y < height; y++)
@@ -220,13 +220,31 @@ bool Player::WinCheck()
 			//map 0,0 탐색후 다음은 0,1 = 좌표상 1,0
 			//블랙이면 계속해서 카운트가 증가한다.
 			//공백 또는 백돌을 만나면 카운트는 초기화된다.
-			if (map[y][x] == CHECK_BLACK)
-				count++;
-			else if (map[y][x] == CHECK_EMPTY || map[y][x] == CHECK_WHITE)
-				count = 0;
-
-			if (count == 5)
-				win = true;
+			switch (map[y][x])
+			{
+			case CHECK_BLACK:
+			{
+				blackCount++;
+				whiteCount = 0;
+				break;
+			}
+			case CHECK_WHITE:
+			{
+				whiteCount++;
+				blackCount = 0;
+				break;
+			}
+			case CHECK_EMPTY:
+			{
+				blackCount = 0;
+				whiteCount = 0;
+				break;
+			}
+			}
+			if (blackCount == 5)
+				return CHECK_BLACK;
+			if (whiteCount == 5)
+				return CHECK_WHITE;
 		}
 	}
 
@@ -237,13 +255,31 @@ bool Player::WinCheck()
 		{
 			//해당좌표가 블랙일경우 
 			//map 0,0 탐색후 다음은 1, 0 = 좌표상 0,1
-			if (map[y][x] == CHECK_BLACK)
-				count++;
-			else if (map[y][x] == CHECK_EMPTY || map[y][x] == CHECK_WHITE)
-				count = 0;
-
-			if (count == 5)
-				win = true;
+			switch (map[y][x])
+			{
+			case CHECK_BLACK:
+			{
+				blackCount++;
+				whiteCount = 0;
+				break;
+			}
+			case CHECK_WHITE:
+			{
+				whiteCount++;
+				blackCount = 0;
+				break;
+			}
+			case CHECK_EMPTY:
+			{
+				blackCount = 0;
+				whiteCount = 0;
+				break;
+			}
+			}
+			if (blackCount == 5)
+				return CHECK_BLACK;
+			if (whiteCount == 5)
+				return CHECK_WHITE;
 		}
 	}
 
@@ -254,16 +290,33 @@ bool Player::WinCheck()
 		{
 			//+1씩 하는 이유는 대각선이 아닌 바로 옆을 순회한다면 count가 0이 되기때문
 			//y증가 시켜주는 이유 : x가 가로만큼 순회하기 때문에 y가 1증가 되기 전에 바로 옆을 탐색해버려서 count가 0이 되기떄문
-			if (map[y + 1][x + 1] == CHECK_BLACK)
+			switch (map[y + 1][x + 1])
 			{
-				count++;
+			case CHECK_BLACK:
+			{
+				blackCount++;
+				whiteCount = 0;
 				y++;
+				break;
 			}
-			else if (map[y + 1][x + 1] == CHECK_EMPTY || map[y][x] == CHECK_WHITE)
-				count = 0;
-
-			if (count == 5)
-				win = true;
+			case CHECK_WHITE:
+			{
+				whiteCount++;
+				blackCount = 0;
+				y++;
+				break;
+			}
+			case CHECK_EMPTY:
+			{
+				blackCount = 0;
+				whiteCount = 0;
+				break;
+			}
+			}
+			if (blackCount == 5)
+				return CHECK_BLACK;
+			if (whiteCount == 5)
+				return CHECK_WHITE;
 		}
 	}
 
@@ -274,20 +327,38 @@ bool Player::WinCheck()
 		{
 			//흑돌 만났을경우 y+1 x-=2 , x를 2빼주는 이유는 루프가 끝나면서 x가 1씩 증가되기 떄문
 			//x를 -1하면 다시 원래대로 돌아오기 때문에 결과적으로 바로 밑에 돌을 체크하게됨
-			if (map[y][x] == CHECK_BLACK)
+			switch (map[y][x])
 			{
-				count++;
+			case CHECK_BLACK:
+			{
+				blackCount++;
+				whiteCount = 0;
 				y++;
 				x -= 2;
+				break;
 			}
-			else if (map[y][x] == CHECK_EMPTY || map[y][x] == CHECK_WHITE)
-				count = 0;
-
-			if (count == 5)
-				win = true;
+			case CHECK_WHITE:
+			{
+				whiteCount++;
+				blackCount = 0;
+				y++;
+				x -= 2;
+				break;
+			}
+			case CHECK_EMPTY:
+			{
+				blackCount = 0;
+				whiteCount = 0;
+				break;
+			}
+			}
+			if (blackCount == 5)
+				return CHECK_BLACK;
+			if (whiteCount == 5)
+				return CHECK_WHITE;
 		}
 	}
 
 	//count가 5일 경우 true를 반환
-	return win;
+	return CHECK_EMPTY;
 }

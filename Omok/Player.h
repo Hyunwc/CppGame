@@ -17,7 +17,8 @@ enum CHECK
 {
 	CHECK_EMPTY = 0, //공백
 	CHECK_BLACK,
-	CHECK_WHITE
+	CHECK_WHITE,
+	CHECK_NOT //선택불가
 };
 
 class Player
@@ -41,7 +42,7 @@ public:
 	void KeyInput(); //키보드 입력에 따라 움직임, 말놓기, 무르기, 종료 수행
 	void CursorUpdate();
 	void Cancel(); //무르기 
-	bool WinCheck();
+	int WinCheck();
 
 	string playerName;
 	int turn;
