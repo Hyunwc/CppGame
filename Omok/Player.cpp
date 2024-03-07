@@ -19,12 +19,32 @@ void Player::SetPosition(const Size& _mapSize)
 
 void Player::StoneDraw()
 {
-	//컨테이너에 저장된 흑돌 Draw
-	for (const auto& pos : BlackStoneVec)
-		MapDraw::DrawPoint("○", pos.m_ix, pos.m_iy);
-	//컨테이너에 저장된 백돌 Draw
-	for (const auto& pos : WhiteStoneVec)
-		MapDraw::DrawPoint("●", pos.m_ix, pos.m_iy);
+	for (int y = 0; y < height; y++)
+	{
+		for (int x = 0; x < width; x++)
+		{
+			switch (map[y][x])
+			{
+			case CHECK_BLACK:
+			{
+				MapDraw::DrawPoint("○", x, y);
+				break;
+			}
+			case CHECK_WHITE:
+			{
+				MapDraw::DrawPoint("●", x, y);
+				break;
+			}
+			case CHECK_NOT:
+			{
+				MapDraw::DrawPoint("※", x, y);
+				break;
+			}
+			default:
+				break;
+			}
+		}
+	}
 
 	if (isBlackTurn)
 		stone = "○";
@@ -110,10 +130,8 @@ void Player::KeyInput()
 			turn++;
 			//CursorUpdate();
 			//블랙턴일때
-			if (isBlackTurn)
+			if (isBlackTurn && map[curPos.m_iy][curPos.m_ix] == CHECK_EMPTY)
 			{
-				//좌표를 흑돌벡터에 push 
-				BlackStoneVec.push_back(curPos);
 				//흑돌을 놓은 좌표에 Black을 대입
 				map[curPos.m_iy][curPos.m_ix] = CHECK_BLACK;
 				//그 좌표를 저장(턴이 돌아 왔을 때 이 좌표에서 시작하기 위함)
@@ -123,10 +141,8 @@ void Player::KeyInput()
 				//블랙에서 화이트턴으로 바뀌었으니 커서 업데이트 함수에서 화이트턴 조건을 타 
 				//백돌의 마지막 좌표로 커서가 업데이트됨
 			}
-			else
+			else if(!isBlackTurn && map[curPos.m_iy][curPos.m_ix] == CHECK_EMPTY)
 			{
-				//흑돌 기능과 반대 역할
-				WhiteStoneVec.push_back(curPos);
 				map[curPos.m_iy][curPos.m_ix] = CHECK_WHITE;
 				whiteSavePos = curPos;
 				playerName = "Black";
@@ -142,19 +158,19 @@ void Player::KeyInput()
 			//turn--;
 			////cout << "무르기 호출";
 			////무르기를 선택한게 블랙턴일 경우 턴 체인지
-			//if (isBlackTurn)
-			//{
-			//	playerName = "White";
-			//	isBlackTurn = false;
-			//}
-			//else
-			//{
-			//	playerName = "Black";
-			//	isBlackTurn = true;
-			//}
-			////체인지 후에 무르기함수 호출
-			//Cancel(); 
-			//break;
+			if (isBlackTurn)
+			{
+				playerName = "White";
+				isBlackTurn = false;
+			}
+			else
+			{
+				playerName = "Black";
+				isBlackTurn = true;
+			}
+			//체인지 후에 무르기함수 호출
+			Cancel(); 
+			break;
 		}
 		}
 
@@ -179,32 +195,20 @@ void Player::CursorUpdate()
 	StoneDraw();
 }
 
-//void Player::Cancel()
-//{
-//	//
-//	if (isBlackTurn) {
-//		//반복자에 흑돌 맨마지막 좌표 저장
-//		//그 좌표 ※표시 여기에 못 놓게 하기 위함 (나중에 예외처리 만들 예정)
-//		//맨마지막에 넣은 좌표 삭제
-//		auto last = BlackStoneVec.end() - 1;
-//		curPos.m_ix = last->m_ix;
-//		curPos.m_iy = last->m_iy;
-//		MapDraw::DrawPoint("※", last->m_ix, last->m_iy);
-//
-//	    BlackStoneVec.erase(BlackStoneVec.end() - 1);
-//	}
-//	else
-//	{
-//		auto last = WhiteStoneVec.end() - 1;
-//		curPos.m_ix = last->m_ix;
-//		curPos.m_iy = last->m_iy;
-//		MapDraw::DrawPoint("※", last->m_ix, last->m_iy);
-//		WhiteStoneVec.erase(WhiteStoneVec.end() - 1);
-//		
-//	}
-//
-//	//CursorUpdate();
-//}
+void Player::Cancel()
+{
+	
+	if (isBlackTurn)
+	{
+		map[blackSavePos.m_iy][blackSavePos.m_ix] = CHECK_NOT;
+	}
+	else
+	{
+		map[whiteSavePos.m_iy][whiteSavePos.m_ix] = CHECK_NOT;
+	}
+
+	CursorUpdate();
+}
 
 int Player::WinCheck()
 {

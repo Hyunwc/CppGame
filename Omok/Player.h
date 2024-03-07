@@ -31,8 +31,6 @@ private:
 	Position curPos; //현재 x, y 좌표
 	Position blackSavePos;
 	Position whiteSavePos; //바둑돌의 좌표를 저장할 변수
-	vector<Position> BlackStoneVec; //흑돌의 좌표를 담을 컨테이너
-	vector<Position> WhiteStoneVec; //백돌의 좌표를 담을 컨테이너
 	bool isBlackTurn; //블랙,화이트 턴 구분할 변수 true일시 블랙 턴
 public:
 	Player();
