@@ -128,6 +128,19 @@ void Player::KeyInput()
 		{
 			//턴증가
 			turn++;
+			for (int y = 0; y < height; y++)
+			{
+				for (int x = 0; x < width; x++)
+				{
+					if (map[y][x] == CHECK_NOT)
+					{
+						map[y][x] = CHECK_EMPTY;
+						Position temp = { x, y };
+						StoneErase(temp);
+					
+					}
+				}
+			}
 			//CursorUpdate();
 			//블랙턴일때
 			if (isBlackTurn && map[curPos.m_iy][curPos.m_ix] == CHECK_EMPTY)
