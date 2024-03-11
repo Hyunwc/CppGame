@@ -24,9 +24,11 @@ enum CHECK
 class Player
 {
 private:
-	int height;
-	int width;
+	int height;  //세로
+	int width;   //가로
 	int map[20][20];
+	int b_CancelCount; //블랙의 무르기 남은 횟수
+	int w_CancelCount; //화이트의 무르기 남은 횟수
 	string stone; //바둑돌 모양
 	Position curPos; //현재 x, y 좌표
 	Position blackSavePos;
@@ -40,6 +42,7 @@ public:
 	void KeyInput(); //키보드 입력에 따라 움직임, 말놓기, 무르기, 종료 수행
 	void CursorUpdate();
 	void Cancel(); //무르기 
+	void MenualUpdate(); //메뉴얼 업데이트 : 이 곳에서 턴 증가와 
 	int WinCheck();
 
 	string playerName;

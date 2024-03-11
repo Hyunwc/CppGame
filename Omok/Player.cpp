@@ -3,6 +3,8 @@
 Player::Player() : stone("○"), isBlackTurn(true), playerName("Black"), map{ {CHECK_EMPTY} }
 {
 	turn = 1;
+	b_CancelCount = 5;
+	w_CancelCount = 5;
 }
 
 void Player::SetPosition(const Size& _mapSize)
@@ -19,23 +21,24 @@ void Player::SetPosition(const Size& _mapSize)
 
 void Player::StoneDraw()
 {
+	//루프를 돌아 해당 좌표에 맞는 기호를 그림
 	for (int y = 0; y < height; y++)
 	{
 		for (int x = 0; x < width; x++)
 		{
 			switch (map[y][x])
 			{
-			case CHECK_BLACK:
+			case CHECK_BLACK: //흑
 			{
 				MapDraw::DrawPoint("○", x, y);
 				break;
 			}
-			case CHECK_WHITE:
+			case CHECK_WHITE: //백
 			{
 				MapDraw::DrawPoint("●", x, y);
 				break;
 			}
-			case CHECK_NOT:
+			case CHECK_NOT: //무르기
 			{
 				MapDraw::DrawPoint("※", x, y);
 				break;
@@ -87,41 +90,34 @@ void Player::KeyInput()
 	//키보드 입력값에 따라
 	if (_kbhit())
 	{
+		//StoneErase(prevPos);  //돌의 이전 좌표를 보낸다.
 		switch (_getch())
 		{
 		case KEY_LEFT:
 		{
-			//x = 0 이상일때까지만 //나중에 수정할 예정
+			//x의 다음좌표가 0 이상일때만 (0까지만)
 			if (curPos.m_ix - 1 >= 0)
-			{
 				curPos.m_ix--;
-				break;
-			}
+			break;
 		}
 		case KEY_RIGHT:
 		{
-			//x = 20 이하 
-			if (curPos.m_ix + 1 < 20)
-			{
+			//x의 다음좌표가 20 미만 즉 19
+			if (curPos.m_ix + 1 < width)
 				curPos.m_ix++;
-				break;
-			}
+			break;
 		}
 		case KEY_UP:
 		{
 			if (curPos.m_iy - 1 >= 0)
-			{
 				curPos.m_iy--;
-				break;
-			}
+			break;
 		}
 		case KEY_DOWN:
 		{
-			if (curPos.m_iy + 1 < 20)
-			{
+			if (curPos.m_iy + 1 < height)
 				curPos.m_iy++;
-				break;
-			}
+			break;
 		}
 		//엔터 입력시
 		case KEY_ENTER:
@@ -137,13 +133,12 @@ void Player::KeyInput()
 						map[y][x] = CHECK_EMPTY;
 						Position temp = { x, y };
 						StoneErase(temp);
-					
 					}
 				}
 			}
 			//CursorUpdate();
-			//블랙턴일때
-			if (isBlackTurn && map[curPos.m_iy][curPos.m_ix] == CHECK_EMPTY)
+			//블랙턴이면서 공백인곳만
+			if ((isBlackTurn && map[curPos.m_iy][curPos.m_ix] == CHECK_EMPTY) && !(map[curPos.m_iy][curPos.m_ix] == CHECK_NOT))
 			{
 				//흑돌을 놓은 좌표에 Black을 대입
 				map[curPos.m_iy][curPos.m_ix] = CHECK_BLACK;
@@ -154,7 +149,7 @@ void Player::KeyInput()
 				//블랙에서 화이트턴으로 바뀌었으니 커서 업데이트 함수에서 화이트턴 조건을 타 
 				//백돌의 마지막 좌표로 커서가 업데이트됨
 			}
-			else if(!isBlackTurn && map[curPos.m_iy][curPos.m_ix] == CHECK_EMPTY)
+			else if(!(isBlackTurn && map[curPos.m_iy][curPos.m_ix] == CHECK_EMPTY) && !(map[curPos.m_iy][curPos.m_ix] == CHECK_NOT))
 			{
 				map[curPos.m_iy][curPos.m_ix] = CHECK_WHITE;
 				whiteSavePos = curPos;
@@ -163,13 +158,13 @@ void Player::KeyInput()
 			}
 
 			CursorUpdate();
+			MenualUpdate();
 			break;
 		}
 		//무르기
 		case KEY_CANCEL:
 		{
-			//turn--;
-			////cout << "무르기 호출";
+			turn--;
 			////무르기를 선택한게 블랙턴일 경우 턴 체인지
 			if (isBlackTurn)
 			{
@@ -212,15 +207,21 @@ void Player::Cancel()
 {
 	
 	if (isBlackTurn)
-	{
 		map[blackSavePos.m_iy][blackSavePos.m_ix] = CHECK_NOT;
-	}
 	else
-	{
 		map[whiteSavePos.m_iy][whiteSavePos.m_ix] = CHECK_NOT;
-	}
 
 	CursorUpdate();
+}
+
+void Player::MenualUpdate()
+{
+	MapDraw::gotoxy(width * 0.8, height + 2);
+	cout << "====조작키====" << endl;
+	cout << "이동 : A, S, W, D  돌놓기 : ENTER" << endl;
+	cout << "무르기 : N 종료 : ESC" << endl;
+	cout << "Player Name : " << playerName << " 무르기 : 5" << endl;
+	cout << "Turn : " << turn;
 }
 
 int Player::WinCheck()
@@ -258,6 +259,7 @@ int Player::WinCheck()
 				break;
 			}
 			}
+
 			if (blackCount == 5)
 				return CHECK_BLACK;
 			if (whiteCount == 5)
@@ -330,6 +332,7 @@ int Player::WinCheck()
 				break;
 			}
 			}
+			//블랙카운트가 5가 될시 check_black 반환
 			if (blackCount == 5)
 				return CHECK_BLACK;
 			if (whiteCount == 5)

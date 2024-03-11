@@ -43,12 +43,13 @@ void GameManager::GameStart()
 	MapDraw::FieldDraw(m_mapSize.m_iWidth, m_mapSize.m_iHeight); //오목판 그리기.
 	//MenualDraw(); //조작법 출력
 	player.StoneDraw();
+	player.MenualUpdate();
 	GamePlay();
 }
 
 void GameManager::GamePlay()
 {
-	MenualDraw(); //조작법을 출력해주는 함수 호출
+	//MenualDraw(); //조작법을 출력해주는 함수 호출
 	
 	while (1)
 	{
@@ -71,14 +72,14 @@ void GameManager::GamePlay()
 
 
 
-void GameManager::MenualDraw()
-{
-	MapDraw::gotoxy(m_mapSize.m_iWidth * 0.8, m_mapSize.m_iHeight + 2);
-	cout << "====조작키====" << endl;
-	cout << "이동 : A, S, W, D  돌놓기 : ENTER" << endl;
-	cout << "무르기 : N 종료 : ESC" << endl;
-	cout << "Player Name : " << player.playerName << " 무르기 : 5" << endl;
-	cout << "Turn : " << player.turn;
-}
+//void GameManager::MenualDraw()
+//{
+//	MapDraw::gotoxy(m_mapSize.m_iWidth * 0.8, m_mapSize.m_iHeight + 2);
+//	cout << "====조작키====" << endl;
+//	cout << "이동 : A, S, W, D  돌놓기 : ENTER" << endl;
+//	cout << "무르기 : N 종료 : ESC" << endl;
+//	cout << "Player Name : " << player.playerName << " 무르기 : 5" << endl;
+//	cout << "Turn : " << player.turn;
+//}
 
 
