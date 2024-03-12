@@ -42,8 +42,9 @@ public:
 	void KeyInput(); //키보드 입력에 따라 움직임, 말놓기, 무르기, 종료 수행
 	void CursorUpdate();
 	void Cancel(); //무르기 
-	void MenualUpdate(); //메뉴얼 업데이트 : 이 곳에서 턴 증가와 
-	int WinCheck();
+	void MenualUpdate(); //메뉴얼 업데이트 : 이 곳에서 턴 증가와
+	void WinStone(); //턴이 바뀔때마다 승리 체크하는 함수 호출하는 함수
+	int WinCheck(int stone); //루프 돌면서 5개인지 체크하여 반환하는 함수
 
 	string playerName;
 	int turn;

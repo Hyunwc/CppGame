@@ -157,8 +157,9 @@ void Player::KeyInput()
 				isBlackTurn = true;
 			}
 
-			CursorUpdate();
-			MenualUpdate();
+			WinStone(); //승리체크
+			CursorUpdate(); //마지막 커서로 위치 업데이트
+			MenualUpdate(); //정보 최신화(어떤 플레이어의 턴, 턴 수, 무르기 수)
 			break;
 		}
 		//무르기
@@ -224,161 +225,40 @@ void Player::MenualUpdate()
 	cout << "Turn : " << turn;
 }
 
-int Player::WinCheck()
+void Player::WinStone()
 {
-	int blackCount = 0;
-	int whiteCount = 0;
+	int Count = 0;
+	
+	if (isBlackTurn)
+	{
+		Count = WinCheck(CHECK_BLACK);
+		if (Count == 5)
+		{
+			MapDraw::gotoxy(width * 0.8, height - 15);
+			cout << "블랙 승리";
+		}
+	}
+	else
+	{
+
+	}
+}
+
+//기존에 int로 작성하였는데 로직 수정되면 bool로 바꿀 예정
+int Player::WinCheck(int stone)
+{
+	int Count = 0;
 
 	//가로 승리 조건 {0, 0} 부터탐색
 	for (int y = 0; y < height; y++)
 	{
 		for (int x = 0; x < width; x++)
 		{
-			//해당좌표가 블랙일경우 
-			//map 0,0 탐색후 다음은 0,1 = 좌표상 1,0
-			//블랙이면 계속해서 카운트가 증가한다.
-			//공백 또는 백돌을 만나면 카운트는 초기화된다.
-			switch (map[y][x])
-			{
-			case CHECK_BLACK:
-			{
-				blackCount++;
-				whiteCount = 0;
-				break;
-			}
-			case CHECK_WHITE:
-			{
-				whiteCount++;
-				blackCount = 0;
-				break;
-			}
-			case CHECK_EMPTY:
-			{
-				blackCount = 0;
-				whiteCount = 0;
-				break;
-			}
-			}
-
-			if (blackCount == 5)
-				return CHECK_BLACK;
-			if (whiteCount == 5)
-				return CHECK_WHITE;
+			
 		}
 	}
-
-	//세로 승리 조건 
-	for (int x = 0; x < width; x++)
-	{
-		for (int y = 0; y < height; y++)
-		{
-			//해당좌표가 블랙일경우 
-			//map 0,0 탐색후 다음은 1, 0 = 좌표상 0,1
-			switch (map[y][x])
-			{
-			case CHECK_BLACK:
-			{
-				blackCount++;
-				whiteCount = 0;
-				break;
-			}
-			case CHECK_WHITE:
-			{
-				whiteCount++;
-				blackCount = 0;
-				break;
-			}
-			case CHECK_EMPTY:
-			{
-				blackCount = 0;
-				whiteCount = 0;
-				break;
-			}
-			}
-			if (blackCount == 5)
-				return CHECK_BLACK;
-			if (whiteCount == 5)
-				return CHECK_WHITE;
-		}
-	}
-
-	//오른쪽 대각선 승리 조건
-	for (int y =  -1; y < height; y++)
-	{
-		for (int x = -1; x < width; x++)
-		{
-			//+1씩 하는 이유는 대각선이 아닌 바로 옆을 순회한다면 count가 0이 되기때문
-			//y증가 시켜주는 이유 : x가 가로만큼 순회하기 때문에 y가 1증가 되기 전에 바로 옆을 탐색해버려서 count가 0이 되기떄문
-			switch (map[y + 1][x + 1])
-			{
-			case CHECK_BLACK:
-			{
-				blackCount++;
-				whiteCount = 0;
-				y++;
-				break;
-			}
-			case CHECK_WHITE:
-			{
-				whiteCount++;
-				blackCount = 0;
-				y++;
-				break;
-			}
-			case CHECK_EMPTY:
-			{
-				blackCount = 0;
-				whiteCount = 0;
-				break;
-			}
-			}
-			//블랙카운트가 5가 될시 check_black 반환
-			if (blackCount == 5)
-				return CHECK_BLACK;
-			if (whiteCount == 5)
-				return CHECK_WHITE;
-		}
-	}
-
-	//왼쪽 대각선 승리조건
-	for (int y = 0; y < height; y++)
-	{
-		for (int x = 0; x < width; x++)
-		{
-			//흑돌 만났을경우 y+1 x-=2 , x를 2빼주는 이유는 루프가 끝나면서 x가 1씩 증가되기 떄문
-			//x를 -1하면 다시 원래대로 돌아오기 때문에 결과적으로 바로 밑에 돌을 체크하게됨
-			switch (map[y][x])
-			{
-			case CHECK_BLACK:
-			{
-				blackCount++;
-				whiteCount = 0;
-				y++;
-				x -= 2;
-				break;
-			}
-			case CHECK_WHITE:
-			{
-				whiteCount++;
-				blackCount = 0;
-				y++;
-				x -= 2;
-				break;
-			}
-			case CHECK_EMPTY:
-			{
-				blackCount = 0;
-				whiteCount = 0;
-				break;
-			}
-			}
-			if (blackCount == 5)
-				return CHECK_BLACK;
-			if (whiteCount == 5)
-				return CHECK_WHITE;
-		}
-	}
-
-	//count가 5일 경우 true를 반환
-	return CHECK_EMPTY;
+	
+	return Count;
 }
+
+

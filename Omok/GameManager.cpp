@@ -56,7 +56,7 @@ void GameManager::GamePlay()
 		player.KeyInput();
 		//player.CursorUpdate();
 		//MenualDraw();
-		if (player.WinCheck() == 1)
+		/*if (player.WinCheck() == 1)
 		{
 			MapDraw::gotoxy(m_mapSize.m_iWidth * 0.8, m_mapSize.m_iHeight + 8);
 			cout << "black ½Â¸®";
@@ -65,7 +65,7 @@ void GameManager::GamePlay()
 		{
 			MapDraw::gotoxy(m_mapSize.m_iWidth * 0.8, m_mapSize.m_iHeight + 8);
 			cout << "white ½Â¸®";
-		}
+		}*/
 			
 	}
 }
