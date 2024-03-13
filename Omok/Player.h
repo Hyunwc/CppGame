@@ -26,10 +26,12 @@ class Player
 private:
 	int height;  //세로
 	int width;   //가로
-	int map[20][20];
+	int turn;
+	int field[20][20];
 	int b_CancelCount; //블랙의 무르기 남은 횟수
 	int w_CancelCount; //화이트의 무르기 남은 횟수
 	string stone; //바둑돌 모양
+	string playerName;
 	Position curPos; //현재 x, y 좌표
 	Position blackSavePos;
 	Position whiteSavePos; //바둑돌의 좌표를 저장할 변수
@@ -46,7 +48,7 @@ public:
 	void WinStone(); //턴이 바뀔때마다 승리 체크하는 함수 호출하는 함수
 	int WinCheck(int stone); //루프 돌면서 5개인지 체크하여 반환하는 함수
 
-	string playerName;
-	int turn;
+	
+	
 	//void Move(char input);
 };

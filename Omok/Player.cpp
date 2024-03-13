@@ -1,6 +1,6 @@
 #include "Player.h"
 
-Player::Player() : stone("○"), isBlackTurn(true), playerName("Black"), map{ {CHECK_EMPTY} }
+Player::Player() : stone("○"), isBlackTurn(true), playerName("Black"), field{ {CHECK_EMPTY} }
 {
 	turn = 1;
 	b_CancelCount = 5;
@@ -26,7 +26,7 @@ void Player::StoneDraw()
 	{
 		for (int x = 0; x < width; x++)
 		{
-			switch (map[y][x])
+			switch (field[y][x])
 			{
 			case CHECK_BLACK: //흑
 			{
@@ -122,42 +122,46 @@ void Player::KeyInput()
 		//엔터 입력시
 		case KEY_ENTER:
 		{
-			//턴증가
-			turn++;
-			for (int y = 0; y < height; y++)
+			
+			//블랙턴이면서 공백인곳만
+			if (field[curPos.m_iy][curPos.m_ix] == CHECK_EMPTY && !(field[curPos.m_iy][curPos.m_ix] == CHECK_NOT))
 			{
-				for (int x = 0; x < width; x++)
+				//턴증가
+				turn++;
+				//체크낫인 좌표 다시 공백으로 바꾸고 오목판 다시 그리기
+				for (int y = 0; y < height; y++)
 				{
-					if (map[y][x] == CHECK_NOT)
+					for (int x = 0; x < width; x++)
 					{
-						map[y][x] = CHECK_EMPTY;
-						Position temp = { x, y };
-						StoneErase(temp);
+						if (field[y][x] == CHECK_NOT)
+						{
+							field[y][x] = CHECK_EMPTY;
+							Position temp = { x, y };
+							StoneErase(temp);
+						}
 					}
 				}
-			}
-			//CursorUpdate();
-			//블랙턴이면서 공백인곳만
-			if ((isBlackTurn && map[curPos.m_iy][curPos.m_ix] == CHECK_EMPTY) && !(map[curPos.m_iy][curPos.m_ix] == CHECK_NOT))
-			{
-				//흑돌을 놓은 좌표에 Black을 대입
-				map[curPos.m_iy][curPos.m_ix] = CHECK_BLACK;
-				//그 좌표를 저장(턴이 돌아 왔을 때 이 좌표에서 시작하기 위함)
-				blackSavePos = curPos;
-				playerName = "White";
-				isBlackTurn = false;
-				//블랙에서 화이트턴으로 바뀌었으니 커서 업데이트 함수에서 화이트턴 조건을 타 
-				//백돌의 마지막 좌표로 커서가 업데이트됨
-			}
-			else if(!(isBlackTurn && map[curPos.m_iy][curPos.m_ix] == CHECK_EMPTY) && !(map[curPos.m_iy][curPos.m_ix] == CHECK_NOT))
-			{
-				map[curPos.m_iy][curPos.m_ix] = CHECK_WHITE;
-				whiteSavePos = curPos;
-				playerName = "Black";
-				isBlackTurn = true;
-			}
+				
+				if (isBlackTurn)
+				{
+					//흑돌을 놓은 좌표에 Black을 대입
+					field[curPos.m_iy][curPos.m_ix] = CHECK_BLACK;
+					//그 좌표를 저장(턴이 돌아 왔을 때 이 좌표에서 시작하기 위함)
+					blackSavePos = curPos;
+					playerName = "White";
+				}
+				else
+				{
+					field[curPos.m_iy][curPos.m_ix] = CHECK_WHITE;
+					whiteSavePos = curPos;
+					playerName = "Black";
+				}
 
-			WinStone(); //승리체크
+				WinStone(); //승리체크 
+				isBlackTurn = !isBlackTurn; //턴체인지
+				
+			}
+			
 			CursorUpdate(); //마지막 커서로 위치 업데이트
 			MenualUpdate(); //정보 최신화(어떤 플레이어의 턴, 턴 수, 무르기 수)
 			break;
@@ -208,9 +212,9 @@ void Player::Cancel()
 {
 	
 	if (isBlackTurn)
-		map[blackSavePos.m_iy][blackSavePos.m_ix] = CHECK_NOT;
+		field[blackSavePos.m_iy][blackSavePos.m_ix] = CHECK_NOT;
 	else
-		map[whiteSavePos.m_iy][whiteSavePos.m_ix] = CHECK_NOT;
+		field[whiteSavePos.m_iy][whiteSavePos.m_ix] = CHECK_NOT;
 
 	CursorUpdate();
 }
@@ -228,19 +232,14 @@ void Player::MenualUpdate()
 void Player::WinStone()
 {
 	int Count = 0;
+	//블랙턴에서 Count가 5가 될시 블랙 승리
 	
-	if (isBlackTurn)
-	{
-		Count = WinCheck(CHECK_BLACK);
-		if (Count == 5)
-		{
-			MapDraw::gotoxy(width * 0.8, height - 15);
-			cout << "블랙 승리";
-		}
-	}
-	else
-	{
+	Count = WinCheck(isBlackTurn ? CHECK_BLACK : CHECK_WHITE);
 
+	if (Count == 5)
+	{
+		MapDraw::gotoxy(width * 0.8, height / 4);
+		cout << (isBlackTurn ? "블랙 승리" : "화이트 승리");
 	}
 }
 
@@ -252,9 +251,78 @@ int Player::WinCheck(int stone)
 	//가로 승리 조건 {0, 0} 부터탐색
 	for (int y = 0; y < height; y++)
 	{
+		Count = 0; //각 행마다 카운트 초기화
 		for (int x = 0; x < width; x++)
 		{
-			
+			if (field[y][x] == stone)
+			{
+				Count++;
+
+				//5개 연속된지 체크
+				if (Count == 5)
+					return Count;
+			}
+			else
+				Count = 0;
+		}
+	}
+	//세로 방향 체크
+	for (int x = 0; x < width; x++)
+	{
+		Count = 0; //각 열마다 카운트 초기화
+		for (int y = 0; y < height; y++)
+		{
+			if (field[y][x] == stone)
+			{
+				Count++;
+
+				//5개 연속된지 체크
+				if (Count == 5)
+					return Count;
+			}
+			else
+				Count = 0;
+		}
+	}
+
+	//우측 하단으로 뻗는 대각선
+	for (int y = 0; y < height; y++)
+	{
+		for (int x = 0; x < width; x++)
+		{
+			Count = 0;
+			for (int i = 0; i < 5; i++)
+			{
+				if (field[y + i][x + i] == stone)
+				{
+					Count++;
+
+					if (Count == 5)
+						return Count;
+				}
+				else
+					Count = 0;
+			}
+		}
+	}
+
+	for (int y = 0; y < height; y++)
+	{
+		for (int x = 0; x < width; x++)
+		{
+			Count = 0;
+			for (int i = 0; i < 5; i++)
+			{
+				if (field[y - i][x + i] == stone)
+				{
+					Count++;
+
+					if (Count == 5)
+						return Count;
+				}
+				else
+					Count = 0;
+			}
 		}
 	}
 	

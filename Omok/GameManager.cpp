@@ -54,6 +54,7 @@ void GameManager::GamePlay()
 	while (1)
 	{
 		player.KeyInput();
+		//player.WinStone();
 		//player.CursorUpdate();
 		//MenualDraw();
 		/*if (player.WinCheck() == 1)
