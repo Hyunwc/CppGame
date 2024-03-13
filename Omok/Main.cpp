@@ -4,7 +4,7 @@
 int main()
 {
 	GameManager gmr; //게임매니저 인스턴스
-	system("mode con cols=40 lines=32");
+	system("mode con cols=40 lines=28");
 
 	while (1)
 	{

@@ -40,7 +40,8 @@ void GameManager::MenuDraw()
 void GameManager::GameStart()
 {
 	system("cls"); //시작과 동시에 기존 화면 지운다.
-	MapDraw::FieldDraw(m_mapSize.m_iWidth, m_mapSize.m_iHeight); //오목판 그리기.
+	player.Reset(); //모든 정보 초기화
+	//MapDraw::FieldDraw(m_mapSize.m_iWidth, m_mapSize.m_iHeight); //오목판 그리기.
 	//MenualDraw(); //조작법 출력
 	player.StoneDraw();
 	player.MenualUpdate();
@@ -49,38 +50,18 @@ void GameManager::GameStart()
 
 void GameManager::GamePlay()
 {
-	//MenualDraw(); //조작법을 출력해주는 함수 호출
-	
 	while (1)
 	{
-		player.KeyInput();
-		//player.WinStone();
-		//player.CursorUpdate();
-		//MenualDraw();
-		/*if (player.WinCheck() == 1)
+		player.KeyInput();			
+		if (player.WinStone() == true)
 		{
-			MapDraw::gotoxy(m_mapSize.m_iWidth * 0.8, m_mapSize.m_iHeight + 8);
-			cout << "black 승리";
+			//system("pause");
+			_getch();
+
+			MenuDraw();
 		}
-		else if (player.WinCheck() == 2)
-		{
-			MapDraw::gotoxy(m_mapSize.m_iWidth * 0.8, m_mapSize.m_iHeight + 8);
-			cout << "white 승리";
-		}*/
-			
 	}
 }
 
-
-
-//void GameManager::MenualDraw()
-//{
-//	MapDraw::gotoxy(m_mapSize.m_iWidth * 0.8, m_mapSize.m_iHeight + 2);
-//	cout << "====조작키====" << endl;
-//	cout << "이동 : A, S, W, D  돌놓기 : ENTER" << endl;
-//	cout << "무르기 : N 종료 : ESC" << endl;
-//	cout << "Player Name : " << player.playerName << " 무르기 : 5" << endl;
-//	cout << "Turn : " << player.turn;
-//}
 
 

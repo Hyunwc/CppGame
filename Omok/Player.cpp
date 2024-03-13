@@ -5,6 +5,7 @@ Player::Player() : stone("○"), isBlackTurn(true), playerName("Black"), field{ {
 	turn = 1;
 	b_CancelCount = 5;
 	w_CancelCount = 5;
+	testcnt = 0;
 }
 
 void Player::SetPosition(const Size& _mapSize)
@@ -122,8 +123,7 @@ void Player::KeyInput()
 		//엔터 입력시
 		case KEY_ENTER:
 		{
-			
-			//블랙턴이면서 공백인곳만
+			//공백이면서 무르기가 아닌 곳만
 			if (field[curPos.m_iy][curPos.m_ix] == CHECK_EMPTY && !(field[curPos.m_iy][curPos.m_ix] == CHECK_NOT))
 			{
 				//턴증가
@@ -158,8 +158,7 @@ void Player::KeyInput()
 				}
 
 				WinStone(); //승리체크 
-				isBlackTurn = !isBlackTurn; //턴체인지
-				
+				isBlackTurn = !isBlackTurn; //턴체인지	
 			}
 			
 			CursorUpdate(); //마지막 커서로 위치 업데이트
@@ -173,11 +172,13 @@ void Player::KeyInput()
 			////무르기를 선택한게 블랙턴일 경우 턴 체인지
 			if (isBlackTurn)
 			{
+				b_CancelCount--;
 				playerName = "White";
 				isBlackTurn = false;
 			}
 			else
 			{
+				w_CancelCount--;
 				playerName = "Black";
 				isBlackTurn = true;
 			}
@@ -221,47 +222,82 @@ void Player::Cancel()
 
 void Player::MenualUpdate()
 {
-	MapDraw::gotoxy(width * 0.8, height + 2);
+	MapDraw::gotoxy(width * 0.6, height + 2);
 	cout << "====조작키====" << endl;
 	cout << "이동 : A, S, W, D  돌놓기 : ENTER" << endl;
 	cout << "무르기 : N 종료 : ESC" << endl;
-	cout << "Player Name : " << playerName << " 무르기 : 5" << endl;
+	cout << "Player Name : " << playerName;
+	if(isBlackTurn)
+		cout << " 무르기 : " << b_CancelCount << endl;
+	else
+		cout << " 무르기 : " << w_CancelCount << endl;
 	cout << "Turn : " << turn;
 }
 
-void Player::WinStone()
+bool Player::WinStone()
 {
 	int Count = 0;
-	//블랙턴에서 Count가 5가 될시 블랙 승리
-	
+	//블랙턴이면 블랙 아니면 화이트를 보냄
 	Count = WinCheck(isBlackTurn ? CHECK_BLACK : CHECK_WHITE);
 
 	if (Count == 5)
 	{
+		//블랙턴이면 블랙승리 아니면 화이트 승리
 		MapDraw::gotoxy(width * 0.8, height / 4);
 		cout << (isBlackTurn ? "블랙 승리" : "화이트 승리");
+		return true;
+		//_getch();
 	}
+
+	return false;
+}
+
+void Player::Reset()
+{
+	//필드 다시 그리기
+	MapDraw::FieldDraw(width, height);
+	//배열 초기화
+	for (int y = 0; y < height; y++)
+	{
+		for (int x = 0; x < width; x++)
+		{
+			field[y][x] = CHECK_EMPTY;
+		}
+	}
+	//현재위치, 마지막 저장위치, 턴 전부 초기 상태로
+	curPos.m_ix = width / 2;
+	curPos.m_iy = height / 2;
+	blackSavePos = curPos;
+	whiteSavePos = curPos;
+	b_CancelCount = 5;
+	w_CancelCount = 5;
+	turn = 1;
+	isBlackTurn = true;
+	playerName = "Black";
 }
 
 //기존에 int로 작성하였는데 로직 수정되면 bool로 바꿀 예정
-int Player::WinCheck(int stone)
+int Player::WinCheck(int stoneColor)
 {
 	int Count = 0;
 
 	//가로 승리 조건 {0, 0} 부터탐색
 	for (int y = 0; y < height; y++)
 	{
-		Count = 0; //각 행마다 카운트 초기화
+		//각 행마다 카운트 초기화
+		//이거 초기화가 안 이루어지면 y = 0 x = 17,18,19 , y = 1 x = 0,1 때 오목으로 이루어짐 
+		Count = 0; 
 		for (int x = 0; x < width; x++)
 		{
-			if (field[y][x] == stone)
+			//연속되는 좌표가 블랙 스톤일 경우에만 증가 
+			if (field[y][x] == stoneColor)
 			{
 				Count++;
-
 				//5개 연속된지 체크
 				if (Count == 5)
 					return Count;
 			}
+			// 연속이 아니라면 0으로
 			else
 				Count = 0;
 		}
@@ -272,7 +308,7 @@ int Player::WinCheck(int stone)
 		Count = 0; //각 열마다 카운트 초기화
 		for (int y = 0; y < height; y++)
 		{
-			if (field[y][x] == stone)
+			if (field[y][x] == stoneColor)
 			{
 				Count++;
 
@@ -293,7 +329,7 @@ int Player::WinCheck(int stone)
 			Count = 0;
 			for (int i = 0; i < 5; i++)
 			{
-				if (field[y + i][x + i] == stone)
+				if (field[y + i][x + i] == stoneColor)
 				{
 					Count++;
 
@@ -305,7 +341,7 @@ int Player::WinCheck(int stone)
 			}
 		}
 	}
-
+	//좌측 하단으로 뻗는 대각선
 	for (int y = 0; y < height; y++)
 	{
 		for (int x = 0; x < width; x++)
@@ -313,7 +349,7 @@ int Player::WinCheck(int stone)
 			Count = 0;
 			for (int i = 0; i < 5; i++)
 			{
-				if (field[y - i][x + i] == stone)
+				if (field[y - i][x + i] == stoneColor)
 				{
 					Count++;
 
