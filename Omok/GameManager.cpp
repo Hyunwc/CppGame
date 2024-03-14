@@ -33,7 +33,7 @@ void GameManager::MenuDraw()
 		GameStart();
 		break;
 	case 2:
-		return;
+		exit(0);
 	}
 }
 
@@ -53,14 +53,18 @@ void GameManager::GamePlay()
 	while (1)
 	{
 		player.KeyInput();			
-		if (player.WinStone() == true)
+		if (player.WinStone())
 		{
-			//system("pause");
-			_getch();
-
-			MenuDraw();
+			EndGame();
 		}
 	}
+}
+
+void GameManager::EndGame()
+{
+	//system("pause");
+	_getch();
+	MenuDraw();
 }
 
 

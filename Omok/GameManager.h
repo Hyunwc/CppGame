@@ -16,5 +16,6 @@ public:
 	void MenuDraw();
 	void GameStart();
 	void GamePlay();
+	void EndGame();
 	//void MenualDraw();
 };
