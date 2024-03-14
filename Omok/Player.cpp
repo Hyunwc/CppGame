@@ -5,7 +5,6 @@ Player::Player() : stone("○"), isBlackTurn(true), playerName("Black"), field{ {
 	turn = 1;
 	b_CancelCount = 5;
 	w_CancelCount = 5;
-	testcnt = 0;
 }
 
 void Player::SetPosition(const Size& _mapSize)
@@ -84,7 +83,7 @@ void Player::StoneErase(Position prevPos)
 }
 
 
-void Player::KeyInput()
+bool Player::KeyInput()
 {
 	//돌의 이전 좌표 저장
 	Position prevPos = curPos;
@@ -157,7 +156,8 @@ void Player::KeyInput()
 					playerName = "Black";
 				}
 
-				WinStone(); //승리체크 
+				if(WinStone())
+					return true; //승리체크 
 				isBlackTurn = !isBlackTurn; //턴체인지	
 			}
 			
@@ -183,7 +183,8 @@ void Player::KeyInput()
 				isBlackTurn = true;
 			}
 			//체인지 후에 무르기함수 호출
-			Cancel(); 
+			Cancel();
+			MenualUpdate();
 			break;
 		}
 		}
@@ -191,6 +192,8 @@ void Player::KeyInput()
 		StoneErase(prevPos);  //돌의 이전 좌표를 보낸다.
 		StoneDraw(); //업데이트된 좌표에 바둑돌을 그린다.
 	}
+
+	return false;
 }
 
 void Player::CursorUpdate()
@@ -246,7 +249,6 @@ bool Player::WinStone()
 		MapDraw::gotoxy(width * 0.8, height / 4);
 		cout << (isBlackTurn ? "블랙 승리" : "화이트 승리");
 		return true;
-		//_getch();
 	}
 
 	return false;
@@ -276,7 +278,7 @@ void Player::Reset()
 	playerName = "Black";
 }
 
-//기존에 int로 작성하였는데 로직 수정되면 bool로 바꿀 예정
+//5목 체크하는 함수 매개변수 stoneColor는 흑인지 백인지 전달받는 변수
 int Player::WinCheck(int stoneColor)
 {
 	int Count = 0;

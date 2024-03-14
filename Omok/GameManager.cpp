@@ -41,8 +41,6 @@ void GameManager::GameStart()
 {
 	system("cls"); //시작과 동시에 기존 화면 지운다.
 	player.Reset(); //모든 정보 초기화
-	//MapDraw::FieldDraw(m_mapSize.m_iWidth, m_mapSize.m_iHeight); //오목판 그리기.
-	//MenualDraw(); //조작법 출력
 	player.StoneDraw();
 	player.MenualUpdate();
 	GamePlay();
@@ -52,8 +50,8 @@ void GameManager::GamePlay()
 {
 	while (1)
 	{
-		player.KeyInput();			
-		if (player.WinStone())
+		//true 반환받으면 EndGame() 호출
+		if (player.KeyInput())
 		{
 			EndGame();
 		}
@@ -62,7 +60,6 @@ void GameManager::GamePlay()
 
 void GameManager::EndGame()
 {
-	//system("pause");
 	_getch();
 	MenuDraw();
 }
