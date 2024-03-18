@@ -47,5 +47,7 @@ public:
 	void MenualUpdate(); //메뉴얼 업데이트 : 이 곳에서 턴 증가와
 	void Reset();
 	bool WinStone(); //턴이 바뀔때마다 승리 체크하는 함수 호출하는 함수
+	void Save(); //저장
+	void Load(); //불러오기
 	int WinCheck(int stoneColor); //루프 돌면서 5개인지 체크하여 반환하는 함수
 };

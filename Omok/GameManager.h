@@ -15,4 +15,5 @@ public:
 	void GameStart(); 
 	void GamePlay();
 	void EndGame();
+	void RePlay(); //리플레이
 };

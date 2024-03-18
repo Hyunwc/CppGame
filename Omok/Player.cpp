@@ -278,6 +278,55 @@ void Player::Reset()
 	playerName = "Black";
 }
 
+//쓰기
+void Player::Save()
+{
+	ofstream save;
+	save.open("save.txt");
+	if (save.is_open())
+	{
+		//돌들의 위치!
+		for (int y = 0; y < height; y++)
+		{
+			for (int x = 0; x < width; x++)
+			{
+				//빈곳이 아닌곳만
+				if (field[y][x] != CHECK_EMPTY)
+				{
+					save << y << " " << x << " " << field[y][x] << endl;
+					//save << field[y][x] << endl;
+				}
+			}
+		}
+		//경과 턴
+		save << turn << endl;
+		//블랙과 화이트의 무르기 횟수
+		save << b_CancelCount << endl;
+		save << w_CancelCount << endl;
+		//이긴 유저
+		save << playerName << endl;
+	}
+	//열었으니 닫아야한다. 닫지 않으면 메모리누수발생
+	save.close();
+}
+
+//읽기
+void Player::Load()
+{
+	ifstream load;
+	load.open("save.txt");
+	if (load.is_open())
+	{
+		string str;
+		//개행단위로
+		while (!load.eof())
+		{
+			getline(load, str);
+		}
+	}
+	load.close();
+}
+
 //5목 체크하는 함수 매개변수 stoneColor는 흑인지 백인지 전달받는 변수
 int Player::WinCheck(int stoneColor)
 {

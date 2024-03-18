@@ -4,6 +4,7 @@
 #include <conio.h>
 #include <iomanip>
 #include <Windows.h>
+#include <fstream>
 #include <vector>
 using namespace std;
 
