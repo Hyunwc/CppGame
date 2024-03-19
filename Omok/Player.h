@@ -28,6 +28,7 @@ private:
 	int width;   //가로
 	int turn;
 	int field[20][20];
+	vector<pair<int, int>> vec;
 	int b_CancelCount; //블랙의 무르기 남은 횟수
 	int w_CancelCount; //화이트의 무르기 남은 횟수
 	string stone; //바둑돌 모양
@@ -40,6 +41,7 @@ public:
 	Player();
 	void SetPosition(const Size& _mapSize);
 	void StoneDraw();
+	void CursorDraw();
 	void StoneErase(Position prevPos);
 	bool KeyInput(); //키보드 입력에 따라 움직임, 말놓기, 무르기, 종료 수행
 	void CursorUpdate();
@@ -49,5 +51,6 @@ public:
 	bool WinStone(); //턴이 바뀔때마다 승리 체크하는 함수 호출하는 함수
 	void Save(); //저장
 	void Load(); //불러오기
+	bool LoadDraw();
 	int WinCheck(int stoneColor); //루프 돌면서 5개인지 체크하여 반환하는 함수
 };

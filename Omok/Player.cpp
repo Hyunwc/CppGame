@@ -48,7 +48,10 @@ void Player::StoneDraw()
 			}
 		}
 	}
+}
 
+void Player::CursorDraw()
+{
 	if (isBlackTurn)
 		stone = "○";
 	else
@@ -85,6 +88,7 @@ void Player::StoneErase(Position prevPos)
 
 bool Player::KeyInput()
 {
+	
 	//돌의 이전 좌표 저장
 	Position prevPos = curPos;
 	//키보드 입력값에 따라
@@ -140,7 +144,8 @@ bool Player::KeyInput()
 						}
 					}
 				}
-				
+				//현재 y와 x를 벡터에 삽입
+				vec.push_back(make_pair(curPos.m_iy, curPos.m_ix));
 				if (isBlackTurn)
 				{
 					//흑돌을 놓은 좌표에 Black을 대입
@@ -191,6 +196,7 @@ bool Player::KeyInput()
 
 		StoneErase(prevPos);  //돌의 이전 좌표를 보낸다.
 		StoneDraw(); //업데이트된 좌표에 바둑돌을 그린다.
+		CursorDraw();
 	}
 
 	return false;
@@ -286,28 +292,24 @@ void Player::Save()
 	if (save.is_open())
 	{
 		//돌들의 위치!
-		for (int y = 0; y < height; y++)
+		for (int i = 0; i < vec.size(); i++)
 		{
-			for (int x = 0; x < width; x++)
-			{
-				//빈곳이 아닌곳만
-				if (field[y][x] != CHECK_EMPTY)
-				{
-					save << y << " " << x << " " << field[y][x] << endl;
-					//save << field[y][x] << endl;
-				}
-			}
+			save << vec[i].first << " " << vec[i].second;
+			
+			if(i + 1 < vec.size())
+				save << endl;
 		}
 		//경과 턴
-		save << turn << endl;
+		//save << turn << endl;
 		//블랙과 화이트의 무르기 횟수
-		save << b_CancelCount << endl;
-		save << w_CancelCount << endl;
+		//save << b_CancelCount << endl;
+		//save << w_CancelCount << endl;
 		//이긴 유저
-		save << playerName << endl;
-	}
+		//save << playerName << endl;
+	
 	//열었으니 닫아야한다. 닫지 않으면 메모리누수발생
 	save.close();
+	}
 }
 
 //읽기
@@ -317,14 +319,68 @@ void Player::Load()
 	load.open("save.txt");
 	if (load.is_open())
 	{
-		string str;
+		vec.clear();
+
+		int x, y;
 		//개행단위로
 		while (!load.eof())
 		{
-			getline(load, str);
+			load >> y >> x;
+			vec.push_back(make_pair(y, x));
+			//getline(load, str);
+			//cout << str << endl;
+			 
+		}
+	load.close();
+
+	//여기서 돌 그리는 기능 만들지말고 인덱스 하나씩 돌면서 ㄱㄱ
+	
+
+	}
+}
+
+bool Player::LoadDraw()
+{
+	//사이즈만큼 돌면안됨 딜레이 걸어야함
+	MapDraw::FieldDraw(width, height);
+	int OldClock, CurClock, i = 0;
+	OldClock = clock();
+	while (1)
+	{
+		/*if (i >= vec.size())
+			break;*/
+
+		CurClock = clock();
+		if (CurClock - OldClock >= 1000)
+		{
+			MenualUpdate();
+			if (isBlackTurn)
+			{
+				//흑돌을 놓은 좌표에 Black을 대입
+				field[vec[i].first][vec[i].second] = CHECK_BLACK;
+				playerName = "White";
+			}
+			else
+			{
+				field[vec[i].first][vec[i].second] = CHECK_WHITE;
+				playerName = "Black";
+			}
+
+			StoneDraw();
+
+			if (WinStone())
+				return true;
+
+			turn++;
+			//턴전환이 먼저되면 윈스톤함수가 윈체크에게 반대의 턴을 보내기 떄문에
+			//true가 반환이 안됨
+			isBlackTurn = !isBlackTurn;
+			i++;
+			OldClock = CurClock;
 		}
 	}
-	load.close();
+
+	return false;
 }
 
 //5목 체크하는 함수 매개변수 stoneColor는 흑인지 백인지 전달받는 변수
@@ -415,5 +471,7 @@ int Player::WinCheck(int stoneColor)
 	
 	return Count;
 }
+
+
 
 

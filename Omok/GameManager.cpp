@@ -47,6 +47,7 @@ void GameManager::GameStart()
 	system("cls"); //시작과 동시에 기존 화면 지운다.
 	player.Reset(); //모든 정보 초기화
 	player.StoneDraw();
+	player.CursorDraw();
 	player.MenualUpdate();
 	GamePlay();
 }
@@ -55,6 +56,7 @@ void GameManager::GamePlay()
 {
 	while (1)
 	{
+		
 		//true 반환받으면 EndGame() 호출
 		if (player.KeyInput())
 		{
@@ -69,7 +71,14 @@ void GameManager::GamePlay()
 //플레이어 클래스에서 저장된 정보를 읽어와야함
 void GameManager::RePlay()
 {
+	system("cls");
 	
+	player.Load();
+	if (player.LoadDraw())
+	{
+		EndGame();
+	}
+	//system("pause");
 }
 
 void GameManager::EndGame()
