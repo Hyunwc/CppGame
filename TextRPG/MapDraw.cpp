@@ -84,15 +84,19 @@ void MapDraw::ErasePoint(int x, int y)
 int MapDraw::MenuSelectCursor(int MenuLen, int AddCol, int x, int y)
 {
 	int Select = 1;
-	DrawPoint("▷", x, y);
+	//초기에 화살표 그리기 1. NewGame 부분에
+	DrawPoint("▷", x / 2, y);
 	while (1)
 	{
-		switch (getch())
+		//입력값에 따라
+		switch (_getch())
 		{
+			//위를 클릭하였을때 
 		case UP:
+			//1이상일때만 지우고 반환하는 셀렉트값-- 
 			if (Select - 1 >= 1)
 			{
-				ErasePoint(x, y);
+				ErasePoint(x / 2, y);
 				y -= AddCol;
 				Select--;
 			}
@@ -100,7 +104,7 @@ int MapDraw::MenuSelectCursor(int MenuLen, int AddCol, int x, int y)
 		case DOWN:
 			if (Select + 1 <= MenuLen)
 			{
-				ErasePoint(x, y);
+				ErasePoint(x / 2, y);
 				y += AddCol;
 				Select++;
 			}
@@ -108,7 +112,7 @@ int MapDraw::MenuSelectCursor(int MenuLen, int AddCol, int x, int y)
 		case ENTER:
 			return Select;
 		}
-		DrawPoint("▷", x, y);
+		DrawPoint("▷", x / 2, y);
 	}
 	return 0;
 }
