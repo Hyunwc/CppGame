@@ -10,6 +10,7 @@ enum CHARACTER_TYPE
 
 class Character
 {
+	//플레이어랑 몬스터 클래스가 이 멤버들을 사용해야 하기 때문에 protected
 protected:
 	CHARACTER_TYPE m_type;
 	string m_name;
@@ -24,24 +25,12 @@ public:
 	Character();
 	//현재 정보를 출력
 	virtual void ShowDisplay();
+	virtual void ShowInfo();
+	//정보를 전달 받는 함수
+	virtual void SetInfo();
 	//죽었는지 체크 (현재 hp가 0이하면 리턴 true)
 	bool DeadCheck();
 	~Character();
 };
 
-//플레이어는 캐릭터다 
-class Player : public Character
-{
 
-public:
-	Player(string name);
-	void ShowDisplay();
-};
-
-class Monster : public Character
-{
-
-public:
-	Monster();
-	void ShowDisplay();
-};
