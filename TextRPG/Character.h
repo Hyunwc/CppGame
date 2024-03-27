@@ -19,7 +19,7 @@ protected:
 	int m_curHp; //현재hp
 	int m_maxHp; //최대hp
 	int m_gold;
-	int m_damager;
+	int m_damage;
 	int m_mana;
 public:
 	Character();
@@ -28,8 +28,14 @@ public:
 	virtual void ShowInfo();
 	//정보를 전달 받는 함수
 	virtual void SetInfo();
+	void Observer();
 	//죽었는지 체크 (현재 hp가 0이하면 리턴 true)
+	void takeDamage(int damage);
 	bool DeadCheck();
+	string GetName() { return m_name; }
+	int GetCurHP() { return m_curHp; }
+	int GetDamage() { return m_damage; }
+
 	~Character();
 };
 
