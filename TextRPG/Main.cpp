@@ -4,7 +4,7 @@
 int main()
 {
 	GameManager gmr;
-	system("mode con cols=60 lines=30");
+	system("mode con cols=50 lines=25");
 
 	gmr.GameSetting();
 	

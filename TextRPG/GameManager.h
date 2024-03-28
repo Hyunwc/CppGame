@@ -17,6 +17,6 @@ public:
 	void Menu(); //메뉴 
 	void Colosseum(); //콜로세움
 	void GamePlay();
-	void ResultBord(int winner); //결과판
+	void ResultBord(int winner, int level); //결과판
 	~GameManager();
 };

@@ -81,7 +81,7 @@ void MapDraw::ErasePoint(int x, int y)
 	return;
 }
 
-int MapDraw::MenuSelectCursor(int MenuLen, int AddCol, int x, int y)
+int MapDraw::MenuSelectCursor(int MenuLen, double AddCol, int x, int y)
 {
 	int Select = 1;
 	//초기에 화살표 그리기 1. NewGame 부분에

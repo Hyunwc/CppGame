@@ -1,6 +1,6 @@
 #include "Character.h"
 
-Character::Character() : m_maxHp(100), m_damage(20)
+Character::Character() : m_maxHp(100), m_power(20)
 {
 }
 

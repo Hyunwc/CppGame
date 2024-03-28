@@ -20,8 +20,8 @@ void Player::SetInfo(string name)
 
 void Player::ShowDisplay()
 {
-	MapDraw::gotoxy(WIDTH * 0.5, HEIGHT * 0.15);
-	cout << "Player : " << m_name << " Hp : " << m_curHp << " Mana : " << m_mana;
+	MapDraw::gotoxy(WIDTH * 0.2, HEIGHT * 0.3);
+	cout << "Player : " << m_name << " Attack : " << m_power << " Hp : " << m_curHp << " Mana : " << m_mana;
 
 	/*cout << "Player : " << m_name << " Level : " << m_level << " Exp : " << m_exp << endl;
 	cout << "Hp : " << m_curHp << " Gold : " << m_gold;*/
@@ -30,7 +30,7 @@ void Player::ShowDisplay()
 void Player::ShowInfo()
 {
 	MapDraw::gotoxy(WIDTH * 0.1, HEIGHT - 3);
-	cout << "Player : " << m_name << " Level : " << m_level << " Exp : " << m_exp;
+	cout << "Player : " << m_name << " Level : " << m_level << " Exp : " << m_exp << endl;
 	cout << "  Hp : " << m_curHp << " Gold : " << m_gold;
 }
 

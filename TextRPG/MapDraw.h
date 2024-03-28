@@ -13,7 +13,7 @@ public:
 	static void DrawMidText(string str, int x, int y);
 	static void TextDraw(string str, int x, int y);
 	static void ErasePoint(int x, int y);
-	static int MenuSelectCursor(int MenuLen, int AddCol, int x, int y);
+	static int MenuSelectCursor(int MenuLen, double AddCol, int x, int y);
 	MapDraw();
 	static inline void gotoxy(int x, int y)
 	{

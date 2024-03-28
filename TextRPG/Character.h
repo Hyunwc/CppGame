@@ -19,7 +19,7 @@ protected:
 	int m_curHp; //현재hp
 	int m_maxHp; //최대hp
 	int m_gold;
-	int m_damage;
+	int m_power; //공격력
 	int m_mana;
 public:
 	Character();
@@ -34,7 +34,8 @@ public:
 	bool DeadCheck();
 	string GetName() { return m_name; }
 	int GetCurHP() { return m_curHp; }
-	int GetDamage() { return m_damage; }
+	int GetDamage() { return m_power; }
+	int GetLevel() { return m_level; }
 
 	~Character();
 };
