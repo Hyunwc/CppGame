@@ -15,3 +15,7 @@ void Monster::ShowDisplay()
 	cout << "Monster : " << m_name << " Attack : " << m_power << " Hp : " << m_curHp;
 }
 
+void Monster::MaxHp()
+{
+	m_curHp = m_maxHp;
+}

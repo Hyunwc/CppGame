@@ -56,7 +56,7 @@ void GameManager::NewGame()
 	cout << "이름을 입력해주세요 : ";
 	cin >> name;
 	//이 곳에 플레이어에게 이름을 넘겨주는 코드 추가할 예정
-	m_player.SetInfo(name);
+	m_player.SetName(name);
 	Menu();
 }
 
@@ -65,6 +65,7 @@ void GameManager::Menu()
 	//화면 지우고 맵 다시 그림
 	system("cls");
 	int Select = 0;
+	m_player.LevelUp();
 	MapDraw::BoxDraw(0, 0, WIDTH, HEIGHT - 3);
 	MapDraw::gotoxy(WIDTH * 0.75, HEIGHT * 0.25);
 	cout << "☆★메뉴★☆";
@@ -189,9 +190,40 @@ void GameManager::GamePlay()
 	}
 }
 
+//몬스터 정보창
+void GameManager::MonsterInfo()
+{
+	system("cls");
+	MapDraw::BoxDraw(0, 0, WIDTH, HEIGHT);
+	ifstream load;
+	load.open("defaultMonster.text");
+	if (load.is_open())
+	{
+		string str;
+		while (!load.eof())
+		{
+
+		}
+	}
+}
+
+//결과판 출력 후 플레이어에게 경험치와 골드 전달
 void GameManager::ResultBord(int winner, int level)
 {
 	system("cls");
+	int exp = 0, gold = 0;
+	//레벨만큼 경험치와 골드를 부여할 예정 졌다면 반만
+	if (winner == PLAYER)
+	{
+		exp = 50 * level;
+		gold = 300 * level;
+	}
+	else
+	{
+		exp = 25 * level;
+		gold = 150 * level;
+	}
+	
 	MapDraw::BoxDraw(0, 0, WIDTH, HEIGHT);
 	//승자가 플레이어면 플레이어 이름 저장 아니면 몬스터 이름 저장
 	string winner_name = (winner == PLAYER) ? m_player.GetName() : m_monster.GetName();
@@ -205,7 +237,10 @@ void GameManager::ResultBord(int winner, int level)
 	MapDraw::gotoxy(WIDTH * 0.8, HEIGHT * 0.6);
 	cout << "획득 골드 : " << 300 * level;
 
-
+	m_player.SetItem(exp, gold);
+	//끝나고 몬스터의 hp를 최대로
+	m_monster.MaxHp();
+	
 	_getch();
 	Menu();
 }

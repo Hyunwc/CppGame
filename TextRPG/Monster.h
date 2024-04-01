@@ -7,4 +7,5 @@ class Monster : public Character
 public:
 	Monster();
 	void ShowDisplay();
+	void MaxHp();
 };
