@@ -18,4 +18,7 @@ struct Weapon
 	string m_strName; //무기 이름
 	int m_damage; //공격력
 	int m_gold; //가격
+
+	int GetDamage() { return m_damage; }
+	int GetGold() { return m_gold; }
 };

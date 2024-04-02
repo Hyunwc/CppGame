@@ -6,6 +6,7 @@
 #include <fstream> //파일 입출력
 #include <time.h>
 #include <list>
+#include <vector>
 using namespace std;
 
 #define col GetStdHandle(STD_OUTPUT_HANDLE)
