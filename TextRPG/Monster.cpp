@@ -9,6 +9,11 @@ Monster::Monster()
 	m_level = 1;
 }
 
+void Monster::ShowInfo()
+{
+
+}
+
 void Monster::ShowDisplay()
 {
 	MapDraw::gotoxy(WIDTH * 0.3, HEIGHT * 0.5);

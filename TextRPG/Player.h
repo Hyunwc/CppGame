@@ -4,7 +4,8 @@
 //플레이어는 캐릭터다 
 class Player : public Character
 {
-
+private:
+	Weapon* weapon;
 public:
 	Player();
 	//Player(string name);
@@ -12,9 +13,10 @@ public:
 	void SetName(string name);
 	void SetItem(int exp, int gold);
 	void LevelUp();
-	void PowerUp(Weapon* weapon);
+	void PowerUp();
+	void MaxHp();
 	void ShowDisplay();
 	void ShowInfo();
-	void BuyShop(int price);
+	void BuyShop(Weapon* weapon);
 };
 

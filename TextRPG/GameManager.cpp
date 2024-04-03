@@ -11,6 +11,25 @@ void GameManager::GameSetting()
 	GameTitle();
 }
 
+void GameManager::LoadMonster()
+{
+	ifstream load;
+	load.open("defaultMonster.txt");
+	if (load.is_open())
+	{
+		string str;
+		while (!load.eof())
+		{
+			string name;
+			int level, hp, power;
+
+			load >> name >> level >> hp >> power;
+			
+		}
+		load.close();
+	}
+}
+
 void GameManager::GameTitle()
 {
 	system("cls");
@@ -66,16 +85,17 @@ void GameManager::Menu()
 	system("cls");
 	int Select = 0;
 	m_player.LevelUp();
+	m_player.PowerUp();
 	MapDraw::BoxDraw(0, 0, WIDTH, HEIGHT - 3);
-	MapDraw::gotoxy(WIDTH * 0.75, HEIGHT * 0.25);
+	MapDraw::gotoxy(WIDTH * 0.7, HEIGHT * 0.3);
 	cout << "☆★메뉴★☆";
 	MapDraw::gotoxy(WIDTH * 0.8, HEIGHT * 0.4);
 	cout << "Colosseum";
-	MapDraw::gotoxy(WIDTH * 0.8, HEIGHT * 0.55);
+	MapDraw::gotoxy(WIDTH * 0.8, HEIGHT * 0.5);
 	cout << "Shop";
-	MapDraw::gotoxy(WIDTH * 0.8, HEIGHT * 0.65);
+	MapDraw::gotoxy(WIDTH * 0.8, HEIGHT * 0.6);
 	cout << "Save";
-	MapDraw::gotoxy(WIDTH * 0.8, HEIGHT * 0.78);
+	MapDraw::gotoxy(WIDTH * 0.8, HEIGHT * 0.7);
 	cout << "Exit";
 	m_player.ShowInfo();
 	//메뉴 갯수, 커서 y좌표를 얼마만큼 내릴지 , 초기 x,y 좌표값
@@ -90,8 +110,8 @@ void GameManager::Menu()
 	case 2:
 	{
 		//상점 아직 개발 안됨
-		//shop.WeaponDisplay(&m_player);
-		break;
+		m_shop.WeaponDisplay(&m_player);
+		Menu();
 	}
 	case 3:
 	{

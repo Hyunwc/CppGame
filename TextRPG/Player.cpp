@@ -39,12 +39,16 @@ void Player::LevelUp()
 	//경험치가 한번에 많이 들어왔을때 레벨이 계속 증가되어야하니 나중에 while문으로 수정해보도록 하자
 }
 
-void Player::PowerUp(Weapon* weapon)
+void Player::PowerUp()
 {
-	//플레이어의 공격력은 전달받은 
-	m_power = weapon->m_damage;
+	if(weapon != nullptr)
+		m_power += weapon->m_damage;
 }
 
+void Player::MaxHp()
+{
+	m_curHp = m_maxHp;
+}
 
 void Player::ShowDisplay()
 {
@@ -59,11 +63,18 @@ void Player::ShowInfo()
 {
 	MapDraw::gotoxy(WIDTH * 0.1, HEIGHT - 3);
 	cout << "Player : " << m_name << " Level : " << m_level << " Exp : " << m_curExp << endl;
-	cout << "  Hp : " << m_curHp << " Gold : " << m_gold << " Attack : " << m_power;
+	cout << "  Hp : " << m_curHp << " Gold : " << m_gold << " Attack : " << m_power << endl;
+
+	if (weapon != nullptr)
+	{
+		cout << "  장착 무기 : " << weapon->m_strName << " 공격력 : " << weapon->m_damage;
+	}
 }
 
-void Player::BuyShop(int price)
+void Player::BuyShop(Weapon* weapon)
 {
-	m_gold -= price;
+	
+	this->weapon = weapon;
+	m_gold -= weapon->m_gold;
 }
 
