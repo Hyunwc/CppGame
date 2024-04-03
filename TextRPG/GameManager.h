@@ -4,12 +4,14 @@
 #include "Player.h"
 #include "Monster.h"
 #include "Weapon.h"
+#include "Shop.h"
 
 class GameManager
 {
 private:
 	Player m_player;
 	Monster m_monster;
+	//Shop shop;
 public:
 	GameManager();
 	void GameSetting(); //게임 초기 설정

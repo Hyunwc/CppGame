@@ -15,5 +15,6 @@ public:
 	void PowerUp(Weapon* weapon);
 	void ShowDisplay();
 	void ShowInfo();
+	void BuyShop(int price);
 };
 

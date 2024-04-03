@@ -16,13 +16,13 @@ void GameManager::GameTitle()
 	system("cls");
 	int Select = 0;
 	MapDraw::BoxDraw(0, 0, WIDTH, HEIGHT);
-	MapDraw::gotoxy(WIDTH * 0.7, HEIGHT * 0.25);
+	MapDraw::gotoxy(WIDTH * 0.7, HEIGHT * 0.2);
 	cout << "☆★TEXT RPG★☆";
 	MapDraw::gotoxy(WIDTH * 0.8, HEIGHT * 0.4);
 	cout << "1. New Game";
-	MapDraw::gotoxy(WIDTH * 0.8, HEIGHT * 0.55);
+	MapDraw::gotoxy(WIDTH * 0.8, HEIGHT * 0.5);
 	cout << "2. Load Game";
-	MapDraw::gotoxy(WIDTH * 0.8, HEIGHT * 0.65);
+	MapDraw::gotoxy(WIDTH * 0.8, HEIGHT * 0.6);
 	cout << "3. Exit";
 	//메뉴 갯수, 커서 y좌표를 얼마만큼 내릴지 , 초기 x,y 좌표값
 	Select = MapDraw::MenuSelectCursor(3, 3, WIDTH * 0.7, HEIGHT * 0.4);
@@ -90,6 +90,7 @@ void GameManager::Menu()
 	case 2:
 	{
 		//상점 아직 개발 안됨
+		//shop.WeaponDisplay(&m_player);
 		break;
 	}
 	case 3:
@@ -99,7 +100,8 @@ void GameManager::Menu()
 	}
 	case 4:
 	{
-		return;
+		GameTitle();
+		break;
 	}
 	default:
 		break;

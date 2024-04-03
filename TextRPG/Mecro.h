@@ -14,5 +14,5 @@ using namespace std;
 #define RED SetConsoleTextAttribute( col,0x000c );
 #define YELLOW SetConsoleTextAttribute( col,0x000e );
 
-#define WIDTH 25
-#define HEIGHT 25
+#define WIDTH 30
+#define HEIGHT 30

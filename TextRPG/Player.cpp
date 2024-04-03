@@ -62,3 +62,8 @@ void Player::ShowInfo()
 	cout << "  Hp : " << m_curHp << " Gold : " << m_gold << " Attack : " << m_power;
 }
 
+void Player::BuyShop(int price)
+{
+	m_gold -= price;
+}
+
