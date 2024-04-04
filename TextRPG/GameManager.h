@@ -23,6 +23,7 @@ public:
 	void Colosseum(); //콜로세움
 	void GamePlay(int count);
 	void Save();
+	void Load();
 	void testfunc();
 	bool FileCheck(int count);
 	void MonsterInfo(); //몬스터 출력

@@ -43,11 +43,12 @@ public:
 	virtual void PowerUp(Weapon* weapon);
 	void takeDamage(int damage);
 	//죽었는지 체크 (현재 hp가 0이하면 리턴 true)
-	bool DeadCheck();
+	virtual bool DeadCheck();
 	string GetName() { return m_name; }
 	int GetCurHP() { return m_curHp; }
 	int GetDamage() { return m_damage; }
 	int GetLevel() { return m_level; }
+	int GetGold() { return m_gold; }
 
 	~Character();
 };

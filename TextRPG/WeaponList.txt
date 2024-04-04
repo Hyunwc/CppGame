@@ -1,4 +1,4 @@
-CLUB boneclub 25 200
-SWORD rustysword 35 400
-AXE goldaxe 45 500
-HAMMER ohama 50 800
+boneclub 25 200
+rustysword 35 400
+goldaxe 45 500
+ohama 50 800

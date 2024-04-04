@@ -10,6 +10,7 @@ Monster::Monster(string name, int level, int hp, int power)
 	m_name = name;
 	m_level = level;
 	m_curHp = hp;
+	m_maxHp = hp;
 	m_damage = power;
 }
 
@@ -30,7 +31,7 @@ void Monster::ShowInfo()
 void Monster::ShowDisplay()
 {
 	MapDraw::gotoxy(WIDTH * 0.3, HEIGHT * 0.5);
-	cout << "Monster : " << m_name << " Attack : " << m_defaultpower << " Hp : " << m_curHp;
+	cout << "Monster : " << m_name << " Attack : " << m_damage << " Hp : " << m_curHp;
 }
 
 void Monster::MaxHp()
