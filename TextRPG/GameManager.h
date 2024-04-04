@@ -21,7 +21,10 @@ public:
 	void NewGame(); //새게임
 	void Menu(); //메뉴 
 	void Colosseum(); //콜로세움
-	void GamePlay();
+	void GamePlay(int count);
+	void Save();
+	void testfunc();
+	bool FileCheck(int count);
 	void MonsterInfo(); //몬스터 출력
 	void ResultBord(int winner, int level); //결과판
 	~GameManager();

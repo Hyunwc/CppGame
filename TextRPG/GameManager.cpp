@@ -8,23 +8,25 @@ GameManager::GameManager()
 void GameManager::GameSetting()
 {
 	//MapDraw::BoxDraw(0, 0, WIDTH, HEIGHT);
+	LoadMonster();
 	GameTitle();
 }
 
 void GameManager::LoadMonster()
 {
+	
 	ifstream load;
 	load.open("defaultMonster.txt");
 	if (load.is_open())
 	{
-		string str;
 		while (!load.eof())
 		{
 			string name;
 			int level, hp, power;
 
 			load >> name >> level >> hp >> power;
-			
+			Monster monster(name, level, hp, power);
+			monsterVec.push_back(monster);
 		}
 		load.close();
 	}
@@ -54,7 +56,8 @@ void GameManager::GameTitle()
 	}
 	case 2:
 	{
-		break;
+		//testfunc();
+		//GameTitle();
 	}
 	case 3:
 	{
@@ -85,7 +88,6 @@ void GameManager::Menu()
 	system("cls");
 	int Select = 0;
 	m_player.LevelUp();
-	m_player.PowerUp();
 	MapDraw::BoxDraw(0, 0, WIDTH, HEIGHT - 3);
 	MapDraw::gotoxy(WIDTH * 0.7, HEIGHT * 0.3);
 	cout << "☆★메뉴★☆";
@@ -116,10 +118,12 @@ void GameManager::Menu()
 	case 3:
 	{
 		//저장 아직 개발 안됨
-		break;
+		Save();
+		Menu();
 	}
 	case 4:
 	{
+		m_player.Reset();
 		GameTitle();
 		break;
 	}
@@ -132,15 +136,24 @@ void GameManager::Colosseum()
 {
 	system("cls");
 	int Select = 0;
+	int height = HEIGHT * 0.2;
 	MapDraw::BoxDraw(0, 0, WIDTH, HEIGHT);
-	//MapDraw::gotoxy(WIDTH * 0.7, HEIGHT * 0.1);
-	//cout << "☆★콜로세움★☆";
-	//m_player.ShowDisplay();
-	//m_player.ShowInfo();
-	GamePlay();
+	MapDraw::gotoxy(WIDTH * 0.7, HEIGHT * 0.1);
+	cout << "☆★콜로세움★☆";
+	for (int i = 0; i < monsterVec.size(); i++)
+	{
+		MapDraw::gotoxy(WIDTH * 0.5, height);
+		cout << "레벨" << monsterVec[i].GetLevel() << " : [" << monsterVec[i].GetName() << endl;
+		height += 3;
+	}
+	Select = MapDraw::MenuSelectCursor(monsterVec.size() + 1, 3, WIDTH * 0.2, HEIGHT * 0.2);
+	//3 6 9 12 15 18 21
+	MapDraw::gotoxy(WIDTH * 0.7, HEIGHT * 0.8);
+	cout << "돌아가기";
+	GamePlay(Select);
 }
 
-void GameManager::GamePlay()
+void GameManager::GamePlay(int count)
 {
 	int Select;
 	//획득 경험치와 골드
@@ -162,7 +175,7 @@ void GameManager::GamePlay()
 		m_player.ShowDisplay();
 		MapDraw::gotoxy(WIDTH, HEIGHT * 0.4);
 		cout << "vs";
-		m_monster.ShowDisplay();
+		monsterVec[count - 1].ShowDisplay();
 		
 		//MapDraw::BoxDraw(2, 20, WIDTH - 2, HEIGHT - 2);
 		
@@ -176,9 +189,9 @@ void GameManager::GamePlay()
 			case 1:
 			{
 				//몬스터에게 플레이어의 공격력만큼의 데미지를 준다
-				m_monster.takeDamage(m_player.GetDamage());
+				monsterVec[count - 1].takeDamage(m_player.GetDamage());
 				MapDraw::gotoxy(WIDTH * 0.2, HEIGHT * 0.7);
-				cout << m_monster.GetName() << "에게 " << m_player.GetDamage() << "만큼의 데미지를 주었습니다!";
+				cout << monsterVec[count - 1].GetName() << "에게 " << monsterVec[count - 1].GetDamage() << "만큼의 데미지를 주었습니다!";
 				break;
 			}
 			case 2:
@@ -194,15 +207,15 @@ void GameManager::GamePlay()
 		}
 		else
 		{
-			m_player.takeDamage(m_monster.GetDamage());
+			m_player.takeDamage(monsterVec[count - 1].GetDamage());
 			MapDraw::gotoxy(WIDTH * 0.2, HEIGHT * 0.7);
-			cout << m_player.GetName() << "에게 " << m_monster.GetDamage() << "만큼의 데미지를 주었습니다!";
+			cout << m_player.GetName() << "에게 " << monsterVec[count - 1].GetDamage() << "만큼의 데미지를 주었습니다!";
 		}
 
-		if (m_player.DeadCheck() || m_monster.DeadCheck())
+		if (m_player.DeadCheck() || monsterVec[count - 1].DeadCheck())
 		{
 			//몬스터가 죽었다면 플레이어의 열거타입을 아니면 몬스터로
-			ResultBord(m_player.DeadCheck() ? MONSTER : PLAYER, m_monster.GetLevel());
+			ResultBord(m_player.DeadCheck() ? MONSTER : PLAYER, monsterVec[count - 1].GetLevel());
 		}
 
 
@@ -211,6 +224,61 @@ void GameManager::GamePlay()
 		_getch();
 	}
 }
+
+bool GameManager::FileCheck(int count)
+{
+	ifstream load;
+	load.open("SavePlayer" + to_string(count) + ".txt");
+	return load.is_open();
+}
+
+void GameManager::Save()
+{
+	system("cls");
+	int Select;
+	string ox;
+	int height = HEIGHT * 0.2;
+	MapDraw::BoxDraw(0, 0, WIDTH, HEIGHT);
+	MapDraw::gotoxy(WIDTH * 0.5, HEIGHT * 0.1);
+	cout << "☆★Save★☆" << endl;
+	//MapDraw::gotoxy(WIDTH * 0.5, HEIGHT * 0.3);
+	
+	for (int i = 1; i <= 5; i++)
+	{
+		if (FileCheck(i))
+			ox = "O";
+		else
+			ox = "X";
+
+		MapDraw::gotoxy(WIDTH * 0.5, height);
+		cout << i << "번 슬롯 : (파일여부 : " << ox << ")" << endl;
+		height += 3;
+	}
+	//6 9 12 15 18 21
+	MapDraw::gotoxy(WIDTH * 0.5, HEIGHT * 0.7);
+	cout << "돌아가기";
+	
+	Select = MapDraw::MenuSelectCursor(6, 3, WIDTH * 0.2, HEIGHT * 0.2);
+
+	m_player.DataSave(Select);
+
+	system("cls");
+	MapDraw::gotoxy(WIDTH * 0.8, HEIGHT * 0.5);
+	cout << "Save가 완료되었습니다!" << endl;
+
+	_getch();
+}
+
+void GameManager::testfunc()
+{
+	for (int i = 0; i < monsterVec.size(); i++)
+	{
+		cout << monsterVec[i].GetLevel() << "," << monsterVec[i].GetName() << endl;
+	}
+	system("pause");
+}
+
+
 
 //몬스터 정보창
 void GameManager::MonsterInfo()

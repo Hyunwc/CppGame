@@ -17,6 +17,8 @@ public:
 	void MaxHp();
 	void ShowDisplay();
 	void ShowInfo();
+	void DataSave(int slot);
 	void BuyShop(Weapon* weapon);
+	void Reset();
 };
 

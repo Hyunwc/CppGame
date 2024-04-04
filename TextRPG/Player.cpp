@@ -6,6 +6,7 @@ Player::Player()
 	m_curExp = 0;
 	m_curHp = m_maxHp;
 	m_gold = 500;
+	m_weaponpower = 0;
 	m_mana = 0;
 }
 
@@ -41,8 +42,9 @@ void Player::LevelUp()
 
 void Player::PowerUp()
 {
+	//weapon이 nullptr이 아닐 경우 기본공격력 + 웨폰의 공격력 추가
 	if(weapon != nullptr)
-		m_power += weapon->m_damage;
+		m_damage += weapon->m_damage;
 }
 
 void Player::MaxHp()
@@ -53,7 +55,7 @@ void Player::MaxHp()
 void Player::ShowDisplay()
 {
 	MapDraw::gotoxy(WIDTH * 0.2, HEIGHT * 0.3);
-	cout << "Player : " << m_name << " Attack : " << m_power << " Hp : " << m_curHp << " Mana : " << m_mana;
+	cout << "Player : " << m_name << " Attack : " << m_damage << " Hp : " << m_curHp << " Mana : " << m_mana;
 
 	/*cout << "Player : " << m_name << " Level : " << m_level << " Exp : " << m_exp << endl;
 	cout << "Hp : " << m_curHp << " Gold : " << m_gold;*/
@@ -63,7 +65,7 @@ void Player::ShowInfo()
 {
 	MapDraw::gotoxy(WIDTH * 0.1, HEIGHT - 3);
 	cout << "Player : " << m_name << " Level : " << m_level << " Exp : " << m_curExp << endl;
-	cout << "  Hp : " << m_curHp << " Gold : " << m_gold << " Attack : " << m_power << endl;
+	cout << "  Hp : " << m_curHp << " Gold : " << m_gold << " Power : (" << m_defaultpower << "+" << m_weaponpower << ")" << endl;
 
 	if (weapon != nullptr)
 	{
@@ -71,10 +73,46 @@ void Player::ShowInfo()
 	}
 }
 
+void Player::DataSave(int slot)
+{
+	ofstream save;
+	save.open("SavePlayer" + to_string(slot) + ".txt");
+	if (save.is_open())
+	{
+		save << m_name << " ";
+		save << m_level << " ";
+		save << m_curExp << " ";
+		save << m_curHp << " ";
+		save << m_defaultpower << " ";
+		save << m_gold << " ";
+		//무기가 존재할 경우에만
+		if(weapon != nullptr)
+			save << weapon->m_Type << endl;
+		save.close();
+	}
+}
+
 void Player::BuyShop(Weapon* weapon)
 {
-	
 	this->weapon = weapon;
+	m_weaponpower = weapon->m_damage;
 	m_gold -= weapon->m_gold;
+
+	PowerUp();
+}
+
+void Player::Reset()
+{
+	m_level = 1;
+	m_curHp = m_maxHp;
+	m_curExp = 0;
+	m_defaultpower = 20;
+	m_gold = 500;
+	m_weaponpower = 0;
+	if (weapon != nullptr)
+	{
+		delete weapon;
+		weapon = nullptr;
+	}
 }
 

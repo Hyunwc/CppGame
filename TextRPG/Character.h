@@ -21,7 +21,9 @@ protected:
 	int m_curHp; //현재hp
 	int m_maxHp; //최대hp
 	int m_gold;
-	int m_power; //공격력
+	int m_defaultpower; //기본공격력
+	int m_weaponpower; //무기의 공격력
+	int m_damage; //총합 데미지
 	int m_mana;
 	
 public:
@@ -44,7 +46,7 @@ public:
 	bool DeadCheck();
 	string GetName() { return m_name; }
 	int GetCurHP() { return m_curHp; }
-	int GetDamage() { return m_power; }
+	int GetDamage() { return m_damage; }
 	int GetLevel() { return m_level; }
 
 	~Character();
