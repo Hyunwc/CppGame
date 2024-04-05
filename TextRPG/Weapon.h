@@ -13,7 +13,7 @@ enum WEAPON
 class Chararcter;
 struct Weapon
 {
-	WEAPON m_Type; //무기 타입
+	//WEAPON m_Type; //무기 타입
 	string m_strName; //무기 이름
 	int m_damage; //공격력
 	int m_gold; //가격

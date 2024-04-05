@@ -33,7 +33,18 @@ void Shop::WeaponDisplay(Player* player)
     case 3:
     case 4:
     {
-        player->BuyShop(&weaponVec[Select - 1]);
+        //플레이어의 골드가 선택한 무기의 가격 이상일떄만
+        if(player->GetGold() >= weaponVec[Select - 1].GetGold())
+            player->BuyShop(&weaponVec[Select - 1]);
+        else
+        {
+            system("cls");
+            MapDraw::gotoxy(WIDTH * 0.3, HEIGHT * 0.5);
+            cout << weaponVec[Select - 1].GetGold() - player->GetGold() << " 골드가 부족합니다";
+            _getch();
+            //WeaponDisplay(player);
+        }
+        
         break;
     }
     case 5:
@@ -42,10 +53,11 @@ void Shop::WeaponDisplay(Player* player)
             player->MaxHp();
         else
         {
-            MapDraw::gotoxy(WIDTH * 0.5, HEIGHT * 0.9);
-            cout << "골드가 부족합니다";
-            
+            system("cls");
+            MapDraw::gotoxy(WIDTH * 0.3, HEIGHT * 0.5);
+            cout << 200 - player->GetGold() << " 골드가 부족합니다";
             _getch();
+            //WeaponDisplay(player);
         }
  
         break;

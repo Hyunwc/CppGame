@@ -117,11 +117,11 @@ void Player::DataLoad(int slot)
 	load.open("SavePlayer" + to_string(slot) + ".txt");
 	if (load.is_open())
 	{
-		while (!load.eof())
-		{
+		//while (!load.eof())
+		//{
 			string name, weaponname;
 			int level, exp, hp, power, gold, weaponpower, weaponprice;
-			Weapon loadweapon;
+			Weapon* loadweapon = new Weapon();
 			load >> name >> level >> exp >> hp >> power >> gold >> weaponname >> weaponpower >> weaponprice;
 			m_name = name;
 			m_level = level;
@@ -129,21 +129,27 @@ void Player::DataLoad(int slot)
 			m_curHp = hp;
 			m_gold = gold;
 			m_defaultpower = power;
-			loadweapon.m_strName = weaponname;
-			loadweapon.m_damage = weaponpower;
-			loadweapon.m_gold = weaponprice;
+			loadweapon->m_strName = weaponname;
+			loadweapon->m_damage = weaponpower;
+			loadweapon->m_gold = weaponprice;
 
-			weapon = &loadweapon;
-		}
+			if (weapon != nullptr)
+				delete weapon;
+			weapon = loadweapon;
+		//}
 		load.close();
 	}
 }
 
-void Player::BuyShop(Weapon* weapon)
+void Player::BuyShop(Weapon* new_weapon)
 {
-	this->weapon = weapon;
-	m_weaponpower = weapon->m_damage;
-	m_gold -= weapon->m_gold;
+	if (weapon != nullptr) {
+		delete weapon;
+	}
+
+	weapon = new_weapon;
+	m_weaponpower = new_weapon->m_damage;
+	m_gold -= new_weapon->m_gold;
 
 	PowerUp();
 }

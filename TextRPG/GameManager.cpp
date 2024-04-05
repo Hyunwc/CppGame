@@ -134,11 +134,13 @@ void GameManager::Menu()
 void GameManager::Colosseum()
 {
 	system("cls");
+	//선택 변수와 높이를 지정할 변수
 	int Select = 0;
 	int height = HEIGHT * 0.2;
 	MapDraw::BoxDraw(0, 0, WIDTH, HEIGHT);
 	MapDraw::gotoxy(WIDTH * 0.7, HEIGHT * 0.1);
 	cout << "☆★콜로세움★☆";
+	//몬스터벡터 사이즈만큼 루프를 돌아서 출력!
 	for (int i = 0; i < monsterVec.size(); i++)
 	{
 		MapDraw::gotoxy(WIDTH * 0.5, height);
@@ -149,8 +151,21 @@ void GameManager::Colosseum()
 	cout << "돌아가기";
 	Select = MapDraw::MenuSelectCursor(monsterVec.size() + 1, 3, WIDTH * 0.2, HEIGHT * 0.2);
 	//3 6 9 12 15 18 21
+	//선택한것이 돌아가기라면 메뉴로 돌아간다.
 	if (Select == monsterVec.size() + 1) Menu();
-	GamePlay(Select);
+	//Select는 대전할 몬스터의 레벨이기도함. 플레이어의 레벨이 몬스터레벨 이상일떄만
+	if(m_player.GetLevel() >= Select)
+		GamePlay(Select);
+	else
+	{
+		system("cls");
+		MapDraw::BoxDraw(0, 0, WIDTH, HEIGHT);
+		MapDraw::gotoxy(WIDTH * 0.1, HEIGHT * 0.5);
+		cout << "당신의 레벨은 " << monsterVec[Select - 1].GetName() << "과 대전하기에 적합하지 않습니다." << endl;
+		_getch();
+		Colosseum();
+	}
+	
 }
 
 void GameManager::GamePlay(int count)
@@ -306,7 +321,7 @@ void GameManager::Load()
 		_getch();
 		Load();
 	}
-
+	
 	system("cls");
 	MapDraw::gotoxy(WIDTH * 0.8, HEIGHT * 0.5);
 	cout << "Load가 완료되었습니다!" << endl;
