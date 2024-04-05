@@ -117,28 +117,42 @@ void Player::DataLoad(int slot)
 	load.open("SavePlayer" + to_string(slot) + ".txt");
 	if (load.is_open())
 	{
-		//while (!load.eof())
-		//{
-			string name, weaponname;
-			int level, exp, hp, power, gold, weaponpower, weaponprice;
-			Weapon* loadweapon = new Weapon();
-			load >> name >> level >> exp >> hp >> power >> gold >> weaponname >> weaponpower >> weaponprice;
-			m_name = name;
-			m_level = level;
-			m_curExp = exp;
-			m_curHp = hp;
-			m_gold = gold;
-			m_defaultpower = power;
-			loadweapon->m_strName = weaponname;
-			loadweapon->m_damage = weaponpower;
-			loadweapon->m_gold = weaponprice;
+		string name, weaponname;
+		int level, exp, hp, power, gold, weaponpower, weaponprice;
+		Weapon* loadweapon = new Weapon();
+		load >> name >> level >> exp >> hp >> power >> gold >> weaponname >> weaponpower >> weaponprice;
+		m_name = name;
+		m_level = level;
+		m_curExp = exp;
+		m_curHp = hp;
+		m_gold = gold;
+		m_defaultpower = power;
+		loadweapon->m_strName = weaponname;
+		loadweapon->m_damage = weaponpower;
+		loadweapon->m_gold = weaponprice;
 
-			if (weapon != nullptr)
-				delete weapon;
-			weapon = loadweapon;
-		//}
-		load.close();
+		if (weapon != nullptr)
+			delete weapon;
+		weapon = loadweapon;
+
+		load.close();	
 	}
+
+	PowerUpdate();
+}
+
+void Player::PowerUpdate()
+{
+	//적에게 가해지는 데미지는 기본적으로 디폴트 파워
+	m_damage = m_defaultpower;
+	//만약 장착 무기가 존재할경우 무기의 데미지도 추가
+	if (weapon != nullptr)
+	{
+		m_damage = m_defaultpower + weapon->GetDamage();
+		m_weaponpower = weapon->GetDamage();
+	}
+		
+	
 }
 
 void Player::BuyShop(Weapon* new_weapon)
@@ -151,7 +165,7 @@ void Player::BuyShop(Weapon* new_weapon)
 	m_weaponpower = new_weapon->m_damage;
 	m_gold -= new_weapon->m_gold;
 
-	PowerUp();
+	PowerUpdate();
 }
 
 
@@ -165,7 +179,7 @@ void Player::Reset()
 	m_weaponpower = 0;
 	if (weapon != nullptr)
 	{
-		//delete weapon;
+		delete weapon;
 		weapon = nullptr;
 	}
 }

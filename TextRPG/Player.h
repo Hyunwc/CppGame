@@ -20,6 +20,7 @@ public:
 	void Respone();
 	void DataSave(int slot);
 	void DataLoad(int slot);
+	void PowerUpdate();
 	void BuyShop(Weapon* weapon);
 	void Reset();
 };

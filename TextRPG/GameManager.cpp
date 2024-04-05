@@ -181,7 +181,7 @@ void GameManager::GamePlay(int count)
 		system("cls");
 
 		//변수에 히어로턴이면 플레이어의 이름 아니면 몬스터의 이름
-		string name = heroTurn ? m_player.GetName() : m_monster.GetName();
+		string name = heroTurn ? m_player.GetName() : monsterVec[count - 1].GetName();
 		MapDraw::BoxDraw(0, 0, WIDTH, HEIGHT);
 		MapDraw::gotoxy(WIDTH * 0.7, HEIGHT * 0.1);
 		cout << "☆★콜로세움★☆";
