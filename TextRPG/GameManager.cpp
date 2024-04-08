@@ -4,10 +4,9 @@ GameManager::GameManager()
 {
 	srand(static_cast<unsigned int>(time(0)));
 }
-//필요없으면 삭제할 예정
 void GameManager::GameSetting()
 {
-	//MapDraw::BoxDraw(0, 0, WIDTH, HEIGHT);
+	//몬스터와 무기를 외부에서 읽어온뒤 GameTitle 실행
 	LoadMonster();
 	m_shop.WeaponLoad();
 	GameTitle();
@@ -15,6 +14,7 @@ void GameManager::GameSetting()
 
 void GameManager::LoadMonster()
 {
+	//defaultMonster.txt에서 읽어와 이름, 레벨, hp, 전투력이 담긴 인스턴스를 벡터에 삽입
 	ifstream load;
 	load.open("defaultMonster.txt");
 	if (load.is_open())
@@ -51,12 +51,12 @@ void GameManager::GameTitle()
 	{
 	case 1:
 	{
-		NewGame();
+		NewGame(); //새게임
 		break;
 	}
 	case 2:
 	{
-		Load();
+		Load(); //저장되었던 정보 불러오기
 	}
 	case 3:
 	{
@@ -76,7 +76,7 @@ void GameManager::NewGame()
 	MapDraw::gotoxy(WIDTH / 2, HEIGHT / 2);
 	cout << "이름을 입력해주세요 : ";
 	cin >> name;
-	//이 곳에 플레이어에게 이름을 넘겨주는 코드 추가할 예정
+	//플레이어에게 이름을 넘겨주고 메뉴 출력
 	m_player.SetName(name);
 	Menu();
 }
@@ -86,7 +86,6 @@ void GameManager::Menu()
 	//화면 지우고 맵 다시 그림
 	system("cls");
 	int Select = 0;
-	m_player.LevelUp();
 	MapDraw::BoxDraw(0, 0, WIDTH, HEIGHT - 3);
 	MapDraw::gotoxy(WIDTH * 0.7, HEIGHT * 0.3);
 	cout << "☆★메뉴★☆";
@@ -98,6 +97,7 @@ void GameManager::Menu()
 	cout << "Save";
 	MapDraw::gotoxy(WIDTH * 0.8, HEIGHT * 0.7);
 	cout << "Exit";
+	//현재 플레이어의 저보를 출력해줌
 	m_player.ShowInfo();
 	//메뉴 갯수, 커서 y좌표를 얼마만큼 내릴지 , 초기 x,y 좌표값
 	Select = MapDraw::MenuSelectCursor(4, 3, WIDTH * 0.7, HEIGHT * 0.4);
@@ -105,23 +105,26 @@ void GameManager::Menu()
 	{
 	case 1:
 	{
-		Colosseum();
+		Colosseum(); //콜로세움 입장
 		break;
 	}
 	case 2:
 	{
-		//상점 아직 개발 안됨
+		//보유 골드로 무기를 구매할 수 있는 상점 
 		m_shop.WeaponDisplay(&m_player);
 		Menu();
+		break;
 	}
 	case 3:
 	{
-		//저장 아직 개발 안됨
+		//현 플레이어의 정보 저장
 		Save();
 		Menu();
+		break;
 	}
 	case 4:
 	{
+		//현 플레이어 정보 초기화하고 GameTitle로 
 		m_player.Reset();
 		GameTitle();
 		break;
@@ -150,10 +153,9 @@ void GameManager::Colosseum()
 	MapDraw::gotoxy(WIDTH * 0.7, HEIGHT * 0.8);
 	cout << "돌아가기";
 	Select = MapDraw::MenuSelectCursor(monsterVec.size() + 1, 3, WIDTH * 0.2, HEIGHT * 0.2);
-	//3 6 9 12 15 18 21
 	//선택한것이 돌아가기라면 메뉴로 돌아간다.
 	if (Select == monsterVec.size() + 1) Menu();
-	//Select는 대전할 몬스터의 레벨이기도함. 플레이어의 레벨이 몬스터레벨 이상일떄만
+	//Select는 대전할 몬스터의 레벨이기도함. 플레이어의 레벨이 몬스터레벨 이상일떄만 GamePlay
 	if(m_player.GetLevel() >= Select)
 		GamePlay(Select);
 	else
@@ -161,6 +163,7 @@ void GameManager::Colosseum()
 		system("cls");
 		MapDraw::BoxDraw(0, 0, WIDTH, HEIGHT);
 		MapDraw::gotoxy(WIDTH * 0.1, HEIGHT * 0.5);
+		//플레이어 레벨이 몬스터보다 낮다면 다시 콜로세움으로
 		cout << "당신의 레벨은 " << monsterVec[Select - 1].GetName() << "과 대전하기에 적합하지 않습니다." << endl;
 		_getch();
 		Colosseum();
@@ -192,66 +195,50 @@ void GameManager::GamePlay(int count)
 		cout << "vs";
 		monsterVec[count - 1].ShowDisplay();
 		
-		//MapDraw::BoxDraw(2, 20, WIDTH - 2, HEIGHT - 2);
-		
+		//히어로턴
 		if (heroTurn)
 		{
-			MapDraw::gotoxy(WIDTH * 0.1, HEIGHT * 0.8);
-			cout << "1. 기본 공격 2. 필살기(50 마나 필요) 입력 : ";
-			cin >> Select;
-			switch (Select)
-			{
-			case 1:
-			{
-				//몬스터에게 플레이어의 공격력만큼의 데미지를 준다
-				monsterVec[count - 1].takeDamage(m_player.GetDamage());
-				MapDraw::gotoxy(WIDTH * 0.2, HEIGHT * 0.7);
-				cout << monsterVec[count - 1].GetName() << "에게 " << m_player.GetDamage() << "만큼의 데미지를 주었습니다!";
-				break;
-			}
-			case 2:
-			{
-				//필살기 로직 나중에 구현할 예정
-				MapDraw::gotoxy(WIDTH * 0.3, HEIGHT * 0.9);
-				cout << "필살기!";
-				break;
-			}
-			default:
-				break;
-			}
+			monsterVec[count - 1].takeDamage(m_player.GetDamage());
+			MapDraw::gotoxy(WIDTH * 0.2, HEIGHT * 0.7);
+			cout << monsterVec[count - 1].GetName() << "에게 " << m_player.GetDamage() << "만큼의 데미지를 주었습니다!";
 		}
 		else
 		{
+			//몬스터 턴일땐 플레이어에게 몬스터의 전투력만큼 데미지를 줌
 			m_player.takeDamage(monsterVec[count - 1].GetDamage());
 			MapDraw::gotoxy(WIDTH * 0.2, HEIGHT * 0.7);
 			cout << m_player.GetName() << "에게 " << monsterVec[count - 1].GetDamage() << "만큼의 데미지를 주었습니다!";
 		}
 
+		//둘중 하나의 hp가 0이 되었을때
 		if (m_player.DeadCheck() || monsterVec[count - 1].DeadCheck())
 		{
-			//몬스터가 죽었다면 플레이어의 열거타입을 아니면 몬스터로
+			//결과전송
 			ResultBord(m_player.DeadCheck() ? MONSTER : PLAYER, monsterVec[count - 1].GetLevel());
 		}
 
-
+		//턴체인지
 		heroTurn = !heroTurn;
 
 		_getch();
 	}
 }
 
+//파일이 존재하는지 체크하는 함수
 bool GameManager::FileCheck(int count)
 {
 	ifstream load;
 	load.open("SavePlayer" + to_string(count) + ".txt");
-	return load.is_open();
+	bool isOpen = load.is_open();
+	load.close(); 
+	return isOpen;
 }
 
 void GameManager::Save()
 {
 	system("cls");
 	int Select;
-	string ox;
+	string ox; // 파일 존재 여부를 작성하기 위한 변수
 	int height = HEIGHT * 0.2;
 	MapDraw::BoxDraw(0, 0, WIDTH, HEIGHT);
 	MapDraw::gotoxy(WIDTH * 0.5, HEIGHT * 0.1);
@@ -260,6 +247,7 @@ void GameManager::Save()
 	
 	for (int i = 1; i <= 5; i++)
 	{
+		//파일이 존재한다면 o표시 아니면 x표시
 		if (FileCheck(i))
 			ox = "O";
 		else
@@ -267,14 +255,15 @@ void GameManager::Save()
 
 		MapDraw::gotoxy(WIDTH * 0.5, height);
 		cout << i << "번 슬롯 : (파일여부 : " << ox << ")" << endl;
-		height += 3;
+		height += 3; //높이조절
 	}
-	//6 9 12 15 18 21
+
 	MapDraw::gotoxy(WIDTH * 0.5, HEIGHT * 0.7);
 	cout << "돌아가기";
 	Select = MapDraw::MenuSelectCursor(6, 3, WIDTH * 0.2, HEIGHT * 0.2);
-	if (Select == 6) return;
+	if (Select == 6) return; //돌아가기
 	
+	//플레이어에게 데이터 저장할 위치 보냄
 	m_player.DataSave(Select);
 	
 	system("cls");
@@ -311,6 +300,7 @@ void GameManager::Load()
 
 	if (Select == 6) GameTitle();
 	
+	//파일이 존재할때만 DataLoad 아니면 다시 Load함수 실행
 	if (FileCheck(Select))
 		m_player.DataLoad(Select);
 	else
@@ -371,6 +361,7 @@ void GameManager::ResultBord(int winner, int level)
 		exp = 50 * level;
 		gold = 300 * level;
 	}
+	//플레이어가 패배했을시 보상은 절반. hp가 0이니 리스폰함수 호출해서 hp충전
 	else
 	{
 		exp = 25 * level;
@@ -391,12 +382,14 @@ void GameManager::ResultBord(int winner, int level)
 	MapDraw::gotoxy(WIDTH * 0.8, HEIGHT * 0.6);
 	cout << "획득 골드 : " << 300 * level;
 
+	//플레이어에게 획득 exp와 gold를 보내줌
 	m_player.SetItem(exp, gold);
 	
 	//끝나고 전투를 치루었던 몬스터의 hp를 최대로
 	monsterVec[level - 1].MaxHp();
 	
 	_getch();
+	m_player.LevelUp();
 	Menu();
 }
 

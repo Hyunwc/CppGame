@@ -49,6 +49,7 @@ void Shop::WeaponDisplay(Player* player)
     }
     case 5:
     {
+        //플레이어의 골드가 200 이상일때만 HP를 충전 가능하게
         if (player->GetGold() >= 200)
             player->MaxHp();
         else

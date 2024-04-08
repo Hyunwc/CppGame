@@ -83,6 +83,7 @@ void Player::ShowInfo()
 
 void Player::Respone()
 {
+	//절반의 HP로 부활
 	m_curHp = m_maxHp / 2;
 }
 
@@ -119,7 +120,7 @@ void Player::DataLoad(int slot)
 	{
 		string name, weaponname;
 		int level, exp, hp, power, gold, weaponpower, weaponprice;
-		Weapon* loadweapon = new Weapon();
+	
 		load >> name >> level >> exp >> hp >> power >> gold >> weaponname >> weaponpower >> weaponprice;
 		m_name = name;
 		m_level = level;
@@ -127,14 +128,19 @@ void Player::DataLoad(int slot)
 		m_curHp = hp;
 		m_gold = gold;
 		m_defaultpower = power;
-		loadweapon->m_strName = weaponname;
-		loadweapon->m_damage = weaponpower;
-		loadweapon->m_gold = weaponprice;
 
 		if (weapon != nullptr)
-			delete weapon;
-		weapon = loadweapon;
-
+		{
+			weapon->m_strName = weaponname;
+			weapon->m_damage = weaponpower;
+			weapon->m_gold = weaponprice;
+		}
+		else
+		{
+			Weapon new_weapon{ weaponname, weaponpower, weaponprice };
+			weapon = &new_weapon;
+		}
+	
 		load.close();	
 	}
 
@@ -152,13 +158,25 @@ void Player::PowerUpdate()
 		m_weaponpower = weapon->GetDamage();
 	}
 		
-	
 }
 
 void Player::BuyShop(Weapon* new_weapon)
 {
-	if (weapon != nullptr) {
-		delete weapon;
+	//무기가 존재하고 현재 무기와 구매하려는 무기의 이름이 같다면
+	if (weapon != nullptr && weapon->m_strName == new_weapon->m_strName)
+	{
+		system("cls");
+		MapDraw::BoxDraw(0, 0, WIDTH, HEIGHT);
+		MapDraw::gotoxy(WIDTH * 0.3, HEIGHT / 2);
+		cout << "이미 착용하고 계신 무기입니다." << endl;
+		_getch();
+		return;
+	}
+
+	// 현재 무기가 존재하는 경우 삭제
+	if (weapon != nullptr)
+	{
+		weapon = nullptr;
 	}
 
 	weapon = new_weapon;
@@ -179,7 +197,6 @@ void Player::Reset()
 	m_weaponpower = 0;
 	if (weapon != nullptr)
 	{
-		delete weapon;
 		weapon = nullptr;
 	}
 }
