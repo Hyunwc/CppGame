@@ -1,4 +1,5 @@
 #include "Shop.h"
+#include <algorithm>
 
 Shop::Shop()
 {
@@ -82,7 +83,6 @@ void Shop::WeaponLoad()
         string str;
         while (!load.eof())
         {
-            //string type;
             string name;
             int power, price;
             Weapon weapon;
@@ -97,6 +97,18 @@ void Shop::WeaponLoad()
         }
         load.close();
     }
+}
+
+Weapon* Shop::GetWeapon(string name)
+{
+    auto itr = std::find_if(weaponVec.begin(), weaponVec.end(), [&](Weapon w)
+        {
+            return w.m_strName == name;
+        });
+
+    if (weaponVec.end() == itr)
+        return nullptr;
+    return &(*itr);
 }
 
 Shop::~Shop()

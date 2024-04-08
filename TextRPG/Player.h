@@ -19,9 +19,10 @@ public:
 	void ShowInfo();
 	void Respone();
 	void DataSave(int slot);
-	void DataLoad(int slot);
+	void DataLoad(int slot, class Shop* shop);
 	void PowerUpdate();
 	void BuyShop(Weapon* weapon);
+	bool SetWeapon(Weapon* weapon);
 	void Reset();
 };
 

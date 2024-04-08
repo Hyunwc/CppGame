@@ -13,10 +13,6 @@ void Character::ShowInfo()
 {
 }
 
-//void Character::SetInfo()
-//{
-//}
-
 
 
 void Character::SetItem(int exp, int gold)

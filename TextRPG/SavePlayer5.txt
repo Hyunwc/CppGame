@@ -1,1 +1,1 @@
-xogus 2 50 200 40 900 goldaxe 45 500
+xx 1 0 100 20 0 goldaxe 

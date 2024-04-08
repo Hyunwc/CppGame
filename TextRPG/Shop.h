@@ -11,6 +11,8 @@ private:
 public:
 	void WeaponDisplay(Player* player);
 	void WeaponLoad();
+	Weapon* GetWeapon(string name);
+	//
 	//void BuyWeapon(Player* player, WEAPON TYPE);
 	Shop();
 	~Shop();

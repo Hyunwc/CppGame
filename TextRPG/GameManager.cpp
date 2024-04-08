@@ -57,6 +57,7 @@ void GameManager::GameTitle()
 	case 2:
 	{
 		Load(); //저장되었던 정보 불러오기
+		break;
 	}
 	case 3:
 	{
@@ -261,13 +262,13 @@ void GameManager::Save()
 	MapDraw::gotoxy(WIDTH * 0.5, HEIGHT * 0.7);
 	cout << "돌아가기";
 	Select = MapDraw::MenuSelectCursor(6, 3, WIDTH * 0.2, HEIGHT * 0.2);
-	if (Select == 6) return; //돌아가기
+	if (Select == 6) GameTitle(); //돌아가기
 	
 	//플레이어에게 데이터 저장할 위치 보냄
 	m_player.DataSave(Select);
 	
 	system("cls");
-	MapDraw::gotoxy(WIDTH * 0.8, HEIGHT * 0.5);
+	MapDraw::gotoxy(WIDTH * 0.6, HEIGHT * 0.5);
 	cout << "Save가 완료되었습니다!" << endl;
 
 	_getch();
@@ -280,7 +281,7 @@ void GameManager::Load()
 	string ox;
 	int height = HEIGHT * 0.2;
 	MapDraw::BoxDraw(0, 0, WIDTH, HEIGHT);
-	MapDraw::gotoxy(WIDTH * 0.5, HEIGHT * 0.1);
+	MapDraw::gotoxy(WIDTH * 0.7, HEIGHT * 0.1);
 	cout << "☆★Load★☆" << endl;
 	for (int i = 1; i <= 5; i++)
 	{
@@ -302,52 +303,22 @@ void GameManager::Load()
 	
 	//파일이 존재할때만 DataLoad 아니면 다시 Load함수 실행
 	if (FileCheck(Select))
-		m_player.DataLoad(Select);
+		m_player.DataLoad(Select, &m_shop);
 	else
 	{
 		system("cls");
-		MapDraw::gotoxy(WIDTH * 0.8, HEIGHT * 0.5);
+		MapDraw::gotoxy(WIDTH * 0.6, HEIGHT * 0.5);
 		cout << "파일이 존재하지 않습니다";
 		_getch();
 		Load();
 	}
 	
 	system("cls");
-	MapDraw::gotoxy(WIDTH * 0.8, HEIGHT * 0.5);
+	MapDraw::gotoxy(WIDTH * 0.6, HEIGHT * 0.5);
 	cout << "Load가 완료되었습니다!" << endl;
 
 	_getch();
 	Menu();
-}
-
-
-
-void GameManager::testfunc()
-{
-	for (int i = 0; i < monsterVec.size(); i++)
-	{
-		cout << monsterVec[i].GetLevel() << "," << monsterVec[i].GetName() << endl;
-	}
-	system("pause");
-}
-
-
-
-//몬스터 정보창
-void GameManager::MonsterInfo()
-{
-	system("cls");
-	MapDraw::BoxDraw(0, 0, WIDTH, HEIGHT);
-	ifstream load;
-	load.open("defaultMonster.text");
-	if (load.is_open())
-	{
-		string str;
-		while (!load.eof())
-		{
-
-		}
-	}
 }
 
 //결과판 출력 후 플레이어에게 경험치와 골드 전달
@@ -358,7 +329,7 @@ void GameManager::ResultBord(int winner, int level)
 	//레벨만큼 경험치와 골드를 부여할 예정 졌다면 반만
 	if (winner == PLAYER)
 	{
-		exp = 50 * level;
+		exp = 500 * level;
 		gold = 300 * level;
 	}
 	//플레이어가 패배했을시 보상은 절반. hp가 0이니 리스폰함수 호출해서 hp충전
@@ -378,9 +349,9 @@ void GameManager::ResultBord(int winner, int level)
 	cout << "승자 : " << winner_name; 
 	//추후에 경험치랑 획득 골드 넣을 예정
 	MapDraw::gotoxy(WIDTH * 0.8, HEIGHT * 0.5);
-	cout << "획득 경험치 : " << 50 * level;
+	cout << "획득 경험치 : " << exp;
 	MapDraw::gotoxy(WIDTH * 0.8, HEIGHT * 0.6);
-	cout << "획득 골드 : " << 300 * level;
+	cout << "획득 골드 : " << gold;
 
 	//플레이어에게 획득 exp와 gold를 보내줌
 	m_player.SetItem(exp, gold);
@@ -389,7 +360,10 @@ void GameManager::ResultBord(int winner, int level)
 	monsterVec[level - 1].MaxHp();
 	
 	_getch();
-	m_player.LevelUp();
+	//플레이어의 현재 경험치가 max경험치 이상일때만 레벨업되게
+	if(m_player.GetCurExp() >= m_player.GetMaxExp())
+		m_player.LevelUp();
+	
 	Menu();
 }
 

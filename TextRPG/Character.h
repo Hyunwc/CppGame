@@ -31,8 +31,6 @@ public:
 	//현재 정보를 출력
 	virtual void ShowDisplay();
 	virtual void ShowInfo();
-	//정보를 전달 받는 함수
-	//virtual void SetInfo();
 	//경험치와 골드를 누적하기위함
 	virtual void SetItem(int exp, int gold);
 	virtual void LevelUp();
@@ -46,6 +44,8 @@ public:
 	virtual bool DeadCheck();
 	string GetName() { return m_name; }
 	int GetCurHP() { return m_curHp; }
+	int GetCurExp() { return m_curExp; }
+	int GetMaxExp() { return m_maxExp; }
 	int GetDamage() { return m_damage; }
 	int GetLevel() { return m_level; }
 	int GetGold() { return m_gold; }

@@ -24,9 +24,7 @@ public:
 	void GamePlay(int count);
 	void Save();
 	void Load();
-	void testfunc();
 	bool FileCheck(int count);
-	void MonsterInfo(); //몬스터 출력
 	void ResultBord(int winner, int level); //결과판
 	~GameManager();
 };
