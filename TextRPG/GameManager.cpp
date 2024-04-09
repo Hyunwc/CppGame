@@ -147,8 +147,21 @@ void GameManager::Colosseum()
 	//몬스터벡터 사이즈만큼 루프를 돌아서 출력!
 	for (int i = 0; i < monsterVec.size(); i++)
 	{
+		//플레이어 레벨보다 높은 것들은 빨간색 이하는 노란색
 		MapDraw::gotoxy(WIDTH * 0.5, height);
-		cout << "레벨" << monsterVec[i].GetLevel() << " : [" << monsterVec[i].GetName() << "]" << endl;
+		if (m_player.GetLevel() < monsterVec[i].GetLevel())
+		{
+			RED
+				cout << "레벨" << monsterVec[i].GetLevel() << " : [" << monsterVec[i].GetName() << "]" << endl;
+			ORIGINAL
+		}
+		else
+		{
+			YELLOW
+				cout << "레벨" << monsterVec[i].GetLevel() << " : [" << monsterVec[i].GetName() << "]" << endl;
+			ORIGINAL
+		}
+		
 		height += 3;
 	}
 	MapDraw::gotoxy(WIDTH * 0.7, HEIGHT * 0.8);
